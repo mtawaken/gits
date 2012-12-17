@@ -1,0 +1,47 @@
+vim快捷键
+h,j,k,l
+dw,d$,d0,dG,dgg
+ctl+g 当前文档情况
+G 文档末尾 gg 文档头
+编程
+[[ ]] 跳到 配对{}
+gD :go to Definition
+''光标跳回上个位置
+:split 打开新窗口
+ctl+w+? 窗口操作: hjkl 切换 HJKL 移动 +- 改变高度 >< 改变宽度（可加多行列） 
+shift+Insert 系统剪切版拷贝
+:set paste :set nopaste 开启paste模式后，会暂时关闭缩进等很多修改代码的东西，直接粘贴原文
+ctl+e ctl+y 光标不动，上下移
+zt,zz,zb 光标不动，使光标所在行为翻动到第一行，中间，末尾
+a 光标处下一字符插入 s删除当前字符插入 i光标位置处插入
+1,2 m 3
+1,2 copy 3
+ctags
+命令行：ctags -R * 当前目录下为*生成tag，然后才可以使用
+ctl+] :go to definition
+ctl+o :get back
+
+taglist:
+TlistOpen/TlistToggle 打开Taglist
+切换到taglist window后,
+o 关于某个tag 打开新window,在该window :q可退出
+
+~/.vim/syntax/c.vim
+设置高亮 使用std_c.vim
+
+c.vim插件
+
+1. gdb filename tty /dev/pts/?
+2. ps -aux   gdb   attach pid
+break continue step next print 
+
+
+shell
+!! := 上一条执行的指令
+ls --sort=-t 按时间排序
+
+ubuntu 最初没有root密码
+sudo passwd root -> **** -> OK -> su root
+
+df -h 察看整个磁盘空间
+du 察看单个文件 -h humanreadable

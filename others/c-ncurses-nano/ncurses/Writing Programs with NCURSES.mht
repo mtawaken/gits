@@ -1,0 +1,3270 @@
+From: <ÓÉ Windows Internet Explorer 7 ±£´æ>
+Subject: Writing Programs with NCURSES
+Date: Mon, 5 Jan 2009 17:38:09 +0800
+MIME-Version: 1.0
+Content-Type: text/html;
+	charset="gb2312"
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://web.cs.mun.ca/~rod/ncurses/ncurses.html
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.5579
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>Writing Programs with NCURSES</TITLE>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Dgb2312"><LINK rev=3Dmade=20
+href=3D"mailto:esr@snark.thyrsus.com">
+<META content=3D"MSHTML 6.00.6000.16788" name=3DGENERATOR></HEAD>
+<BODY>
+<H1>Writing Programs with NCURSES</H1>
+<BLOCKQUOTE>by Eric S. Raymond and Zeyd M. Ben-Halim<BR></BLOCKQUOTE>
+<H1>Contents</H1>
+<UL>
+  <LI><A=20
+  =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#introduction">Intr=
+oduction</A>=20
+
+  <UL>
+    <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#history">A Brief=20
+    History of Curses</A>=20
+    <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#scope">Scope of=20
+    This Document</A>=20
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#terminology">Termi=
+nology</A>=20
+    </LI></UL>
+  <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#curses">The =
+Curses=20
+  Library</A>=20
+  <UL>
+    <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#overview">An=20
+    Overview of Curses</A>=20
+    <UL>
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#compiling">Compili=
+ng=20
+      Programs using Curses</A>=20
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#updating">Updating=
+=20
+      the Screen</A>=20
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#stdscr">Standard=20
+      Windows and Function Naming Conventions</A>=20
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#variables">Variabl=
+es</A>=20
+      </LI></UL>
+    <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#using">Using the=20
+    Library</A>=20
+    <UL>
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#starting">Starting=
+=20
+      up</A>=20
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#output">Output</A>=
+=20
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#input">Input</A>=20
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#formschars">Using =
+
+      Forms Characters</A>=20
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#attributes">Charac=
+ter=20
+      Attributes and Color</A>=20
+      <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#mouse">Mouse=20
+      Interfacing</A>=20
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#finishing">Finishi=
+ng=20
+      Up</A> </LI></UL>
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#functions">Functio=
+n=20
+    Descriptions</A>=20
+    <UL>
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#init">Initializati=
+on=20
+      and Wrapup</A>=20
+      <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#flush">Causing=20
+      Output to the Terminal</A>=20
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#lowlevel">Low-Leve=
+l=20
+      Capability Access</A>=20
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#debugging">Debuggi=
+ng</A>=20
+      </LI></UL>
+    <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#hints">Hints,=20
+    Tips, and Tricks</A>=20
+    <UL>
+      <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#caution">Some=20
+      Notes of Caution</A>=20
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#leaving">Temporari=
+ly=20
+      Leaving ncurses Mode</A>=20
+      <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#xterm">Using=20
+      <TT>ncurses</TT> under <TT>xterm</TT></A>=20
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#screens">Handling =
+
+      Multiple Terminal Screens</A>=20
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#testing">Testing =
+for=20
+      Terminal Capabilities</A>=20
+      <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#tuning">Tuning=20
+      for Speed</A>=20
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#special">Special=20
+      Features of <TT>ncurses</TT></A> </LI></UL>
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#compat">Compatibil=
+ity=20
+    with Older Versions</A>=20
+    <UL>
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#refbug">Refresh =
+of=20
+      Overlapping Windows</A>=20
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#backbug">Backgroun=
+d=20
+      Erase</A> </LI></UL>
+    <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#xsifuncs">XSI=20
+    Curses Conformance</A> </LI></UL>
+  <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#panels">The =
+Panels=20
+  Library</A>=20
+  <UL>
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#pcompile">Compilin=
+g=20
+    With the Panels Library</A>=20
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#poverview">Overvie=
+w of=20
+    Panels</A>=20
+    <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#pstdscr">Panels,=20
+    Input, and the Standard Screen</A>=20
+    <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#hiding">Hiding=20
+    Panels</A>=20
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#pmisc">Miscellaneo=
+us=20
+    Other Facilities</A> </LI></UL>
+  <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#menu">The Menu=20
+  Library</A>=20
+  <UL>
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#mcompile">Compilin=
+g=20
+    with the menu Library</A>=20
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#moverview">Overvie=
+w of=20
+    Menus</A>=20
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#mselect">Selecting=
+=20
+    items</A>=20
+    <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#mdisplay">Menu=20
+    Display</A>=20
+    <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#mwindows">Menu=20
+    Windows</A>=20
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#minput">Processing=
+ Menu=20
+    Input</A>=20
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#mmisc">Miscellaneo=
+us=20
+    Other Features</A> </LI></UL>
+  <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#form">The Forms=20
+  Library</A>=20
+  <UL>
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fcompile">Compilin=
+g=20
+    with the forms Library</A>=20
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#foverview">Overvie=
+w of=20
+    Forms</A>=20
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fcreate">Creating =
+and=20
+    Freeing Fields and Forms</A>=20
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fattributes">Fetch=
+ing=20
+    and Changing Field Attributes</A>=20
+    <UL>
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fsizes">Fetching =
+Size=20
+      and Location Data</A>=20
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#flocation">Changin=
+g=20
+      the Field Location</A>=20
+      <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fjust">The=20
+      Justification Attribute</A>=20
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fdispatts">Field=20
+      Display Attributes</A>=20
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#foptions">Field=20
+      Option Bits</A>=20
+      <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fstatus">Field=20
+      Status</A>=20
+      <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fuser">Field=20
+      User Pointer</A> </LI></UL>
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fdynamic">Variable=
+-Sized=20
+    Fields</A>=20
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fvalidation">Field=
+=20
+    Validation</A>=20
+    <UL>
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#ftype_alpha">TYPE_=
+ALPHA</A>=20
+
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#ftype_alnum">TYPE_=
+ALNUM</A>=20
+
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#ftype_enum">TYPE_E=
+NUM</A>=20
+
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#ftype_integer">TYP=
+E_INTEGER</A>=20
+
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#ftype_numeric">TYP=
+E_NUMERIC</A>=20
+
+      <LI><A=20
+      =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#ftype_regexp">TYPE=
+_REGEXP</A>=20
+      </LI></UL>
+    <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fbuffer">Direct=20
+    Field Buffer Manipulation</A> </LI></UL>
+  <LI><A=20
+  =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#formattrs">Attribu=
+tes of=20
+  Forms</A>=20
+  <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fdisplay">Control =
+
+  of Form Display</A>=20
+  <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fdriver">Input=20
+  Processing in the Forms Driver</A>=20
+  <UL>
+    <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fpage">Page=20
+    Navigation Requests</A>=20
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#ffield">Inter-Fiel=
+d=20
+    Navigation Requests</A>=20
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fifield">Intra-Fie=
+ld=20
+    Navigation Requests</A>=20
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fscroll">Scrolling=
+=20
+    Requests</A>=20
+    <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fedit">Field=20
+    Editing Requests</A>=20
+    <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#forder">Order=20
+    Requests</A>=20
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fappcmds">Applicat=
+ion=20
+    Commands</A> </LI></UL>
+  <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fhooks">Field=20
+  Change Hooks</A>=20
+  <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#ffocus">Field=20
+  Change Commands</A>=20
+  <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#frmoptions">Form=20
+  Options</A>=20
+  <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fcustom">Custom=20
+  Validation Types</A>=20
+  <UL>
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#flinktypes">Union =
+
+    Types</A>=20
+    <LI><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fnewtypes">New=20
+    Field Types</A>=20
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fcheckargs">Valida=
+tion=20
+    Function Arguments</A>=20
+    <LI><A=20
+    =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fcustorder">Order =
+
+    Functions For Custom Types</A>=20
+    <LI><A name=3D#fcustprobs>Avoiding Problems</A> </LI></UL></LI></UL>
+<HR>
+
+<H1><A name=3Dintroduction>Introduction</A></H1>This document is an =
+introduction=20
+to programming with <TT>curses</TT>. It is not an exhaustive reference =
+for the=20
+curses Application Programming Interface (API); that role is filled by =
+the=20
+<TT>curses</TT> manual pages. Rather, it is intended to help C =
+programmers ease=20
+into using the package.=20
+<P>This document is aimed at C applications programmers not yet =
+specifically=20
+familiar with ncurses. If you are already an experienced <TT>curses</TT> =
+
+programmer, you should nevertheless read the sections on <A=20
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#mouse">Mouse=20
+Interfacing</A>, <A=20
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#debugging">Debuggi=
+ng</A>,=20
+<A href=3D"http://web.cs.mun.ca/~rod/ncurses/compat">Compatibility with =
+Older=20
+Versions</A>, and <A=20
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#hints">Hints, =
+Tips, and=20
+Tricks</A>. These will bring you up to speed on the special features and =
+quirks=20
+of the <TT>ncurses</TT> implementation. If you are not so experienced, =
+keep=20
+reading.=20
+<P>The <TT>curses</TT> package is a subroutine library for =
+terminal-independent=20
+screen-painting and input-event handling which presents a high level =
+screen=20
+model to the programmer, hiding differences between terminal types and =
+doing=20
+automatic optimization of output to change one screenfull of text into =
+another.=20
+<TT>Curses</TT> uses terminfo, which is a database format that can =
+describe the=20
+capabilities of thousands of different terminals.=20
+<P>The <TT>curses</TT> API may seem something of an archaism on UNIX =
+desktops=20
+increasingly dominated by X, Motif, and Tcl/Tk. Nevertheless, UNIX still =
+
+supports tty lines and X supports <EM>xterm(1)</EM>; the <TT>curses</TT> =
+API has=20
+the advantage of (a) back-portability to character-cell terminals, and =
+(b)=20
+simplicity. For an application that does not require bit-mapped graphics =
+and=20
+multiple fonts, an interface implementation using <TT>curses</TT> will =
+typically=20
+be a great deal simpler and less expensive than one using an X toolkit.=20
+<P>
+<H2><A name=3Dhistory>A Brief History of Curses</A></H2>Historically, =
+the first=20
+ancestor of <TT>curses</TT> was the routines written to provide =
+screen-handling=20
+for the game <TT>rogue</TT>; these used the already- existing =
+<TT>termcap</TT>=20
+database facility for describing terminal capabilities. These routines =
+were=20
+abstracted into a documented library and first released with the early =
+BSD UNIX=20
+versions.=20
+<P>System III UNIX from Bell Labs featured a rewritten and much-improved =
+
+<TT>curses</TT> library. It introduced the terminfo format. Terminfo is =
+based on=20
+Berkeley's termcap database, but contains a number of improvements and=20
+extensions. Parameterized capabilities strings were introduced, making =
+it=20
+possible to describe multiple video attributes, and colors and to handle =
+far=20
+more unusual terminals than possible with termcap. In the later AT&amp;T =
+System=20
+V releases, <TT>curses</TT> evolved to use more facilities and offer =
+more=20
+capabilities, going far beyond BSD curses in power and flexibility.
+<P>
+<H2><A name=3Dscope>Scope of This Document</A></H2>This document =
+describes=20
+<TT>ncurses</TT>, a freeware implementation of the System V =
+<TT>curses</TT> API=20
+with some clearly marked extensions. It includes the following System V =
+curses=20
+features:=20
+<P>
+<UL>
+  <LI>Support for multiple screen highlights (BSD curses could only =
+handle one=20
+  `standout' highlight, usually reverse-video).=20
+  <P></P>
+  <LI>Support for line- and box-drawing using forms characters.=20
+  <P></P>
+  <LI>Recognition of function keys on input.=20
+  <P></P>
+  <LI>Color support.=20
+  <P></P>
+  <LI>Support for pads (windows of larger than screen size on which the =
+screen=20
+  or a subwindow defines a viewport).=20
+  <P></P></LI></UL>Also, this package makes use of the insert and delete =
+line and=20
+character features of terminals so equipped, and determines how to =
+optimally use=20
+these features with no help from the programmer. It allows arbitrary=20
+combinations of video attributes to be displayed, even on terminals that =
+leave=20
+``magic cookies'' on the screen to mark changes in attributes.=20
+<P>The <TT>ncurses</TT> package can also capture and use event reports =
+from a=20
+mouse in some environments (notably, xterm under the X window system). =
+This=20
+document includes tips for using the mouse. The <TT>ncurses</TT> package =
+was=20
+originated by Pavel Curtis. The primary maintainer of the package is <A=20
+href=3D"mailto:zmbenhal@netcom.com">Zeyd Ben-Halim</A>=20
+&lt;zmbenhal@netcom.com&gt;. <A =
+href=3D"mailto:esr@snark.thyrsus.com">Eric S.=20
+Raymond</A> &lt;esr@snark.thyrsus.com&gt; wrote many of the new features =
+in=20
+versions after 1.8.1 and wrote most of this introduction.=20
+<P>This document also describes the <A=20
+href=3D"http://web.cs.mun.ca/~rod/ncurses/panels"></A>extension library, =
+similarly=20
+modeled on the SVr4 panels facility. This library allows you to =
+associate=20
+backing store with each of a stack or deck of overlapping windows, and =
+provides=20
+operations for moving windows around in the stack that change their =
+visibility=20
+in the natural way (handling window overlaps).=20
+<P>Finally, this document describes in detail the <A=20
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#menu">menus</A> =
+and <A=20
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#form">forms</A> =
+extension=20
+libraries, also cloned from System V, which support easy construction =
+and=20
+sequences of menus and fill-in forms. This code was contributed to the =
+project=20
+by <A href=3D"mailto:Juergen.Pfeifer@T-Online.de">J=A8=B9rgen =
+Pfeifer</A>.=20
+<P>
+<H2><A name=3Dterminology>Terminology</A></H2>In this document, the =
+following=20
+terminology is used with reasonable consistency:=20
+<DL>
+  <DT>window=20
+  <DD>A data structure describing a sub-rectangle of the screen =
+(possibly the=20
+  entire screen). You can write to a window as though it were a =
+miniature=20
+  screen, scrolling independently of other windows on the physical =
+screen.=20
+  <P></P>
+  <DT>screens=20
+  <DD>A subset of windows which are as large as the terminal screen, =
+i.e., they=20
+  start at the upper left hand corner and encompass the lower right hand =
+corner.=20
+  One of these, <TT>stdscr</TT>, is automatically provided for the =
+programmer.=20
+  <P></P>
+  <DT>terminal screen=20
+  <DD>The package's idea of what the terminal display currently looks =
+like,=20
+  i.e., what the user sees now. This is a special screen.=20
+  <P></P></DD></DL>
+<H1><A name=3Dcurses>The Curses Library</A></H1>
+<H2><A name=3Doverview>An Overview of Curses</A></H2>
+<H3><A name=3Dcompiling>Compiling Programs using Curses</A></H3>In order =
+to use=20
+the library, it is necessary to have certain types and variables =
+defined.=20
+Therefore, the programmer must have a line: <PRE>	  #include =
+&lt;curses.h&gt;
+</PRE>at the top of the program source. The screen package uses the =
+Standard I/O=20
+library, so <TT>&lt;curses.h&gt;</TT> includes <TT>&lt;stdio.h&gt;</TT>. =
+
+<TT>&lt;curses.h&gt;</TT> also includes <TT>&lt;termios.h&gt;</TT>,=20
+<TT>&lt;termio.h&gt;</TT>, or <TT>&lt;sgtty.h&gt;</TT> depending on your =
+system.=20
+It is redundant (but harmless) for the programmer to do these includes, =
+too. In=20
+linking with <TT>curses</TT> you need to have <TT>-lncurses</TT> in your =
+LDFLAGS=20
+or on the command line. There is no need for any other libraries.=20
+<H3><A name=3Dupdating>Updating the Screen</A></H3>In order to update =
+the screen=20
+optimally, it is necessary for the routines to know what the screen =
+currently=20
+looks like and what the programmer wants it to look like next. For this =
+purpose,=20
+a data type (structure) named WINDOW is defined which describes a window =
+image=20
+to the routines, including its starting position on the screen (the (y, =
+x)=20
+coordinates of the upper left hand corner) and its size. One of these =
+(called=20
+<TT>curscr</TT>, for current screen) is a screen image of what the =
+terminal=20
+currently looks like. Another screen (called <TT>stdscr</TT>, for =
+standard=20
+screen) is provided by default to make changes on.=20
+<P>A window is a purely internal representation. It is used to build and =
+store a=20
+potential image of a portion of the terminal. It doesn't bear any =
+necessary=20
+relation to what is really on the terminal screen; it's more like a =
+scratchpad=20
+or write buffer.=20
+<P>To make the section of physical screen corresponding to a window =
+reflect the=20
+contents of the window structure, the routine <TT>refresh()</TT> (or=20
+<TT>wrefresh()</TT> if the window is not <TT>stdscr</TT>) is called.=20
+<P>A given physical screen section may be within the scope of any number =
+of=20
+overlapping windows. Also, changes can be made to windows in any order, =
+without=20
+regard to motion efficiency. Then, at will, the programmer can =
+effectively say=20
+``make it look like this,'' and let the package implementation determine =
+the=20
+most efficient way to repaint the screen.=20
+<P>
+<H3><A name=3Dstdscr>Standard Windows and Function Naming =
+Conventions</A></H3>As=20
+hinted above, the routines can use several windows, but two are =
+automatically=20
+given: <TT>curscr</TT>, which knows what the terminal looks like, and=20
+<TT>stdscr</TT>, which is what the programmer wants the terminal to look =
+like=20
+next. The user should never actually access <TT>curscr</TT> directly. =
+Changes=20
+should be made to through the API, and then the routine =
+<TT>refresh()</TT> (or=20
+<TT>wrefresh()</TT>) called.=20
+<P>Many functions are defined to use <TT>stdscr</TT> as a default =
+screen. For=20
+example, to add a character to <TT>stdscr</TT>, one calls =
+<TT>addch()</TT> with=20
+the desired character as argument. To write to a different window. use =
+the=20
+routine <TT>waddch()</TT> (for `w'indow-specific addch()) is provided. =
+This=20
+convention of prepending function names with a `w' when they are to be =
+applied=20
+to specific windows is consistent. The only routines which do not follow =
+it are=20
+those for which a window must always be specified.=20
+<P>In order to move the current (y, x) coordinates from one point to =
+another,=20
+the routines <TT>move()</TT> and <TT>wmove()</TT> are provided. However, =
+it is=20
+often desirable to first move and then perform some I/O operation. In =
+order to=20
+avoid clumsiness, most I/O routines can be preceded by the prefix 'mv' =
+and the=20
+desired (y, x) coordinates prepended to the arguments to the function. =
+For=20
+example, the calls <PRE>	  move(y, x);
+	  addch(ch);
+</PRE>can be replaced by <PRE>	  mvaddch(y, x, ch);
+</PRE>and <PRE>	  wmove(win, y, x);
+	  waddch(win, ch);
+</PRE>can be replaced by <PRE>	  mvwaddch(win, y, x, ch);
+</PRE>Note that the window description pointer (win) comes before the =
+added (y,=20
+x) coordinates. If a function requires a window pointer, it is always =
+the first=20
+parameter passed.=20
+<P>
+<H3><A name=3Dvariables>Variables</A></H3>The <TT>curses</TT> library =
+sets some=20
+variables describing the terminal capabilities. <PRE>      type   name   =
+   description
+      ------------------------------------------------------------------
+      int    LINES     number of lines on the terminal
+      int    COLS      number of columns on the terminal
+</PRE>The <TT>curses.h</TT> also introduces some <TT>#define</TT> =
+constants and=20
+types of general usefulness:=20
+<DL>
+  <DT><TT>bool</TT>=20
+  <DD>boolean type, actually a `char' (e.g., <TT>bool doneit;</TT>)=20
+  <DT><TT>TRUE</TT>=20
+  <DD>boolean `true' flag (1).=20
+  <DT><TT>FALSE</TT>=20
+  <DD>boolean `false' flag (0).=20
+  <DT><TT>ERR</TT>=20
+  <DD>error flag returned by routines on a fail (-1).=20
+  <DT><TT>OK</TT>=20
+  <DD>error flag returned by routines when things go right. </DD></DL>
+<H2><A name=3Dusing>Using the Library</A></H2>Now we describe how to =
+actually use=20
+the screen package. In it, we assume all updating, reading, etc. is =
+applied to=20
+<TT>stdscr</TT>. These instructions will work on any window, providing =
+you=20
+change the function names and parameters as mentioned above.=20
+<P>Here is a sample program to motivate the discussion:=20
+<P><PRE>#include &lt;curses.h&gt;
+#include &lt;signal.h&gt;
+
+static void finish(int sig);
+
+main(int argc, char *argv[])
+{
+    /* initialize your non-curses data structures here */
+
+    (void) signal(SIGINT, finish);      /* arrange interrupts to =
+terminate */
+
+    (void) initscr();      /* initialize the curses library */
+    keypad(stdscr, TRUE);  /* enable keyboard mapping */
+    (void) nonl();         /* tell curses not to do NL-&gt;CR/NL on =
+output */
+    (void) cbreak();       /* take input chars one at a time, no wait =
+for \n */
+    (void) noecho();       /* don't echo input */
+
+    if (has_colors())
+    {
+        start_color();
+
+        /*
+         * Simple color assignment, often all we need.
+         */
+        init_pair(COLOR_BLACK, COLOR_BLACK, COLOR_BLACK);
+        init_pair(COLOR_GREEN, COLOR_GREEN, COLOR_BLACK);
+        init_pair(COLOR_RED, COLOR_RED, COLOR_BLACK);
+        init_pair(COLOR_CYAN, COLOR_CYAN, COLOR_BLACK);
+        init_pair(COLOR_WHITE, COLOR_WHITE, COLOR_BLACK);
+        init_pair(COLOR_MAGENTA, COLOR_MAGENTA, COLOR_BLACK);
+        init_pair(COLOR_BLUE, COLOR_BLUE, COLOR_BLACK);
+        init_pair(COLOR_YELLOW, COLOR_YELLOW, COLOR_BLACK);
+    }
+
+    for (;;)
+    {
+        int c =3D getch();     /* refresh, accept single keystroke of =
+input */
+
+        /* process the command keystroke */
+    }
+
+    finish(0);               /* we're done */
+}
+
+static void finish(int sig)
+{
+    endwin();
+
+    /* do your non-curses wrapup here */
+
+    exit(0);
+}
+</PRE>
+<H3><A name=3Dstarting>Starting up</A></H3>In order to use the screen =
+package, the=20
+routines must know about terminal characteristics, and the space for=20
+<TT>curscr</TT> and <TT>stdscr</TT> must be allocated. These function=20
+<TT>initscr()</TT> does both these things. Since it must allocate space =
+for the=20
+windows, it can overflow memory when attempting to do so. On the rare =
+occasions=20
+this happens, <TT>initscr()</TT> will terminate the program with an =
+error=20
+message. <TT>initscr()</TT> must always be called before any of the =
+routines=20
+which affect windows are used. If it is not, the program will core dump =
+as soon=20
+as either <TT>curscr</TT> or <TT>stdscr</TT> are referenced. However, it =
+is=20
+usually best to wait to call it until after you are sure you will need =
+it, like=20
+after checking for startup errors. Terminal status changing routines =
+like=20
+<TT>nl()</TT> and <TT>cbreak()</TT> should be called after =
+<TT>initscr()</TT>.=20
+<P>Once the screen windows have been allocated, you can set them up for =
+your=20
+program. If you want to, say, allow a screen to scroll, use =
+<TT>scrollok()</TT>.=20
+If you want the cursor to be left in place after the last change, use=20
+<TT>leaveok()</TT>. If this isn't done, <TT>refresh()</TT> will move the =
+cursor=20
+to the window's current (y, x) coordinates after updating it.=20
+<P>You can create new windows of your own using the functions =
+<TT>newwin()</TT>,=20
+<TT>derwin()</TT>, and <TT>subwin()</TT>. The routine <TT>delwin()</TT> =
+will=20
+allow you to get rid of old windows. All the options described above can =
+be=20
+applied to any window.=20
+<P>
+<H3><A name=3Doutput>Output</A></H3>Now that we have set things up, we =
+will want=20
+to actually update the terminal. The basic functions used to change what =
+will go=20
+on a window are <TT>addch()</TT> and <TT>move()</TT>. <TT>addch()</TT> =
+adds a=20
+character at the current (y, x) coordinates. <TT>move()</TT> changes the =
+current=20
+(y, x) coordinates to whatever you want them to be. It returns =
+<TT>ERR</TT> if=20
+you try to move off the window. As mentioned above, you can combine the =
+two into=20
+<TT>mvaddch()</TT> to do both things at once.=20
+<P>The other output functions, such as <TT>addstr()</TT> and =
+<TT>printw()</TT>,=20
+all call <TT>addch()</TT> to add characters to the window.=20
+<P>After you have put on the window what you want there, when you want =
+the=20
+portion of the terminal covered by the window to be made to look like =
+it, you=20
+must call <TT>refresh()</TT>. In order to optimize finding changes,=20
+<TT>refresh()</TT> assumes that any part of the window not changed since =
+the=20
+last <TT>refresh()</TT> of that window has not been changed on the =
+terminal,=20
+i.e., that you have not refreshed a portion of the terminal with an =
+overlapping=20
+window. If this is not the case, the routine <TT>touchwin()</TT> is =
+provided to=20
+make it look like the entire window has been changed, thus making=20
+<TT>refresh()</TT> check the whole subsection of the terminal for =
+changes.=20
+<P>If you call <TT>wrefresh()</TT> with <TT>curscr</TT> as its argument, =
+it will=20
+make the screen look like <TT>curscr</TT> thinks it looks like. This is =
+useful=20
+for implementing a command which would redraw the screen in case it get =
+messed=20
+up.=20
+<P>
+<H3><A name=3Dinput>Input</A></H3>The complementary function to =
+<TT>addch()</TT>=20
+is <TT>getch()</TT> which, if echo is set, will call <TT>addch()</TT> to =
+echo=20
+the character. Since the screen package needs to know what is on the =
+terminal at=20
+all times, if characters are to be echoed, the tty must be in raw or =
+cbreak=20
+mode. Since initially the terminal has echoing enabled and is in =
+ordinary=20
+``cooked'' mode, one or the other has to changed before calling=20
+<TT>getch()</TT>; otherwise, the program's output will be unpredictable. =
+
+<P>When you need to accept line-oriented input in a window, the =
+functions=20
+<TT>wgetstr()</TT> and friends are available. There is even a =
+<TT>wscanw()</TT>=20
+function that can do <TT>scanf()</TT>(3)-style multi-field parsing on =
+window=20
+input. These pseudo-line-oriented functions turn on echoing while they =
+execute.=20
+<P>The example code above uses the call <TT>keypad(stdscr, TRUE)</TT> to =
+enable=20
+support for function-key mapping. With this feature, the =
+<TT>getch()</TT> code=20
+watches the input stream for character sequences that correspond to =
+arrow and=20
+function keys. These sequences are returned as pseudo-character values. =
+The=20
+<TT>#define</TT> values returned are listed in the <TT>curses.h</TT> The =
+mapping=20
+from sequences to <TT>#define</TT> values is determined by <TT>key_</TT> =
+
+capabilities in the terminal's terminfo entry.=20
+<P>
+<H3><A name=3Dformschars>Using Forms Characters</A></H3>The =
+<TT>addch()</TT>=20
+function (and some others, including <TT>box()</TT> and =
+<TT>border()</TT>) can=20
+accept some pseudo-character arguments which are specially defined by=20
+<TT>ncurses</TT>. These are <TT>#define</TT> values set up in the=20
+<TT>curses.h</TT> header; see there for a complete list (look for the =
+prefix=20
+<TT>ACS_</TT>).=20
+<P>The most useful of the ACS defines are the forms-drawing characters. =
+You can=20
+use these to draw boxes and simple graphs on the screen. If the terminal =
+does=20
+not have such characters, <TT>curses.h</TT> will map them to a =
+recognizable=20
+(though ugly) set of ASCII defaults.=20
+<P>
+<H3><A name=3Dattributes>Character Attributes and Color</A></H3>The=20
+<TT>ncurses</TT> package supports screen highlights including standout,=20
+reverse-video, underline, and blink. It also supports color, which is =
+treated as=20
+another kind of highlight.=20
+<P>Highlights are encoded, internally, as high bits of the =
+pseudo-character type=20
+(<TT>chtype</TT>) that <TT>curses.h</TT> uses to represent the contents =
+of a=20
+screen cell. See the <TT>curses.h</TT> header file for a complete list =
+of=20
+highlight mask values (look for the prefix <TT>A_</TT>).
+<P>There are two ways to make highlights. One is to logical-or the value =
+of the=20
+highlights you want into the character argument of an <TT>addch()</TT> =
+call, or=20
+any other output call that takes a <TT>chtype</TT> argument.=20
+<P>The other is to set the current-highlight value. This is =
+logical-or'ed with=20
+any highlight you specify the first way. You do this with the functions=20
+<TT>attron()</TT>, <TT>attroff()</TT>, and <TT>attrset()</TT>; see the =
+manual=20
+pages for details. Color is a special kind of highlight. The package =
+actually=20
+thinks in terms of color pairs, combinations of foreground and =
+background=20
+colors. The sample code above sets up eight color pairs, all of the=20
+guaranteed-available colors on black. Note that each color pair is, in =
+effect,=20
+given the name of its foreground color. Any other range of eight =
+non-conflicting=20
+values could have been used as the first arguments of the =
+<TT>init_pair()</TT>=20
+values.=20
+<P>Once you've done an <TT>init_pair()</TT> that creates color-pair N, =
+you can=20
+use <TT>COLOR_PAIR(N)</TT> as a highlight that invokes that particular =
+color=20
+combination. Note that <TT>COLOR_PAIR(N)</TT>, for constant N, is itself =
+a=20
+compile-time constant and can be used in initializers.=20
+<P>
+<H3><A name=3Dmouse>Mouse Interfacing</A></H3>The <TT>ncurses</TT> =
+library also=20
+provides a mouse interface. Note: his facility is original to =
+<TT>ncurses</TT>,=20
+it is not part of either the XSI Curses standard, nor of System V =
+Release 4, nor=20
+BSD curses. Thus, we recommend that you wrap mouse-related code in an =
+#ifdef=20
+using the feature macro NCURSES_MOUSE_VERSION so it will not be compiled =
+and=20
+linked on non-ncurses systems.=20
+<P>Presently, mouse event reporting works only under xterm. In the =
+future,=20
+ncurses will detect the presence of \fBgpm\fR(1), Alessandro Rubini's =
+freeware=20
+mouse server for Linux systems, and accept mouse reports through it.=20
+<P>The mouse interface is very simple. To activate it, you use the =
+function=20
+<TT>mousemask()</TT>, passing it as first argument a bit-mask that =
+specifies=20
+what kinds of events you want your program to be able to see. It will =
+return the=20
+bit-mask of events that actually become visible, which may differ from =
+the=20
+argument if the mouse device is not capable of reporting some of the =
+event types=20
+you specify.=20
+<P>Once the mouse is active, your application's command loop should =
+watch for a=20
+return value of <TT>KEY_MOUSE</TT> from <TT>wgetch()</TT>. When you see =
+this, a=20
+mouse event report has been queued. To pick it off the queue, use the =
+function=20
+<TT>getmouse()</TT> (you must do this before the next <TT>wgetch()</TT>, =
+
+otherwise another mouse event might come in and make the first one=20
+inaccessible).=20
+<P>Each call to <TT>getmouse()</TT> fills a structure (the address of =
+which=20
+you'll pass it) with mouse event data. The event data includes =
+zero-origin,=20
+screen-relative character-cell coordinates of the mouse pointer. It also =
+
+includes an event mask. Bits in this mask will be set, corresponding to =
+the=20
+event type being reported.=20
+<P>The mouse structure contains two additional fields which may be =
+significant=20
+in the future as ncurses interfaces to new kinds of pointing device. In =
+addition=20
+to x and y coordinates, there is a slot for a z coordinate; this might =
+be useful=20
+with touchscreens that can return a pressure or duration parameter. =
+There is=20
+also a device ID field, which could be used to distinguish between =
+multiple=20
+pointing devices.=20
+<P>The class of visible events may be changed at any time via=20
+<TT>mousemask()</TT>. Events that can be reported include presses, =
+releases,=20
+single-, double- and triple-clicks (you can set the maximum button-down =
+time for=20
+clicks). If you don't make clicks visible, they will be reported as=20
+press-release pairs. In some environments, the event mask may include =
+bits=20
+reporting the state of shift, alt, and ctrl keys on the keyboard during =
+the=20
+event.=20
+<P>A function to check whether a mouse event fell within a given window =
+is also=20
+supplied. You can use this to see whether a given window should consider =
+a mouse=20
+event relevant to it.=20
+<P>Because mouse event reporting will not be available in all =
+environments, it=20
+would be unwise to build <TT>ncurses</TT> applications that =
+<EM>require</EM> the=20
+use of a mouse. Rather, you should use the mouse as a shortcut for=20
+point-and-shoot commands your application would normally accept from the =
+
+keyboard. Two of the test games in the <TT>ncurses</TT> distribution=20
+(<TT>bs</TT> and <TT>knight</TT>) contain code that illustrates how this =
+can be=20
+done.=20
+<P>See the manual page <TT>curs_mouse(3X)</TT> for full details of the=20
+mouse-interface functions.=20
+<P>
+<H3><A name=3Dfinishing>Finishing Up</A></H3>In order to clean up after =
+the=20
+<TT>ncurses</TT> routines, the routine <TT>endwin()</TT> is provided. It =
+
+restores tty modes to what they were when <TT>initscr()</TT> was first =
+called,=20
+and moves the cursor down to the lower-left corner. Thus, anytime after =
+the call=20
+to initscr, <TT>endwin()</TT> should be called before exiting.=20
+<P>
+<H2><A name=3Dfunctions>Function Descriptions</A></H2>We describe the =
+detailed=20
+behavior of some important curses functions here, as a supplement to the =
+manual=20
+page descriptions.=20
+<H3><A name=3Dinit>Initialization and Wrapup</A></H3>
+<DL>
+  <DT><TT>initscr()</TT>=20
+  <DD>The first function called should almost always be =
+<TT>initscr()</TT>. This=20
+  will determine the terminal type and initialize curses data =
+structures.=20
+  <TT>initscr()</TT> also arranges that the first call to =
+<TT>refresh()</TT>=20
+  will clear the screen. If an error occurs a message is written to =
+standard=20
+  error and the program exits. Otherwise it returns a pointer to stdscr. =
+A few=20
+  functions may be called before initscr (<TT>slk_init()</TT>,=20
+  <TT>filter()</TT>, <TT>ripofflines()</TT>, <TT>use_env()</TT>, and, if =
+you are=20
+  using multiple terminals, <TT>newterm()</TT>.)=20
+  <P></P>
+  <DT><TT>endwin()</TT>=20
+  <DD>Your program should always call <TT>endwin()</TT> before exiting =
+or=20
+  shelling out of the program. This function will restore tty modes, =
+move the=20
+  cursor to the lower left corner of the screen, reset the terminal into =
+the=20
+  proper non-visual mode. Calling <TT>refresh()</TT> or =
+<TT>doupdate()</TT>=20
+  after a temporary escape from the program will restore the ncurses =
+screen from=20
+  before the escape.=20
+  <P></P>
+  <DT><TT>newterm(type, ofp, ifp)</TT>=20
+  <DD>A program which outputs to more than one terminal should use=20
+  <TT>newterm()</TT> instead of <TT>initscr()</TT>. <TT>newterm()</TT> =
+should be=20
+  called once for each terminal. It returns a variable of type =
+<TT>SCREEN *</TT>=20
+  which should be saved as a reference to that terminal. The arguments =
+are the=20
+  type of the terminal (a string) and <TT>FILE</TT> pointers for the =
+output and=20
+  input of the terminal. If type is NULL then the environment variable=20
+  <TT>$TERM</TT> is used. <TT>endwin()</TT> should called once at wrapup =
+time=20
+  for each terminal opened using this function.=20
+  <P></P>
+  <DT><TT>set_term(new)</TT>=20
+  <DD>This function is used to switch to a different terminal previously =
+opened=20
+  by <TT>newterm()</TT>. The screen reference for the new terminal is =
+passed as=20
+  the parameter. The previous terminal is returned by the function. All =
+other=20
+  calls affect only the current terminal.=20
+  <P></P>
+  <DT><TT>delscreen(sp)</TT>=20
+  <DD>The inverse of <TT>newterm()</TT>; deallocates the data structures =
+
+  associated with a given <TT>SCREEN</TT> reference.=20
+  <P></P></DD></DL>
+<H3><A name=3Dflush>Causing Output to the Terminal</A></H3>
+<DL>
+  <DT><TT>refresh()</TT> and <TT>wrefresh(win)</TT>=20
+  <DD>These functions must be called to actually get any output on the =
+terminal,=20
+  as other routines merely manipulate data structures. =
+<TT>wrefresh()</TT>=20
+  copies the named window to the physi- cal terminal screen, taking into =
+account=20
+  what is already there in order to do optimizations. <TT>refresh()</TT> =
+does a=20
+  refresh of <TT>stdscr()</TT>. Unless <TT>leaveok()</TT> has been =
+enabled, the=20
+  physical cursor of the terminal is left at the location of the =
+window's=20
+  cursor.=20
+  <P></P>
+  <DT><TT>doupdate()</TT> and <TT>wnoutrefresh(win)</TT>=20
+  <DD>These two functions allow multiple updates with more efficiency =
+than=20
+  wrefresh. To use them, it is important to understand how curses works. =
+In=20
+  addition to all the window structures, curses keeps two data =
+structures=20
+  representing the terminal screen: a physical screen, describing what =
+is=20
+  actually on the screen, and a virtual screen, describing what the =
+programmer=20
+  wants to have on the screen. wrefresh works by first copying the named =
+window=20
+  to the virtual screen (<TT>wnoutrefresh()</TT>), and then calling the =
+routine=20
+  to update the screen (<TT>doupdate()</TT>). If the programmer wishes =
+to output=20
+  several windows at once, a series of calls to <TT>wrefresh</TT> will =
+result in=20
+  alternating calls to <TT>wnoutrefresh()</TT> and <TT>doupdate()</TT>, =
+causing=20
+  several bursts of output to the screen. By calling =
+<TT>wnoutrefresh()</TT> for=20
+  each window, it is then possible to call <TT>doupdate()</TT> once, =
+resulting=20
+  in only one burst of output, with fewer total characters transmitted =
+(this=20
+  also avoids a visually annoying flicker at each update).=20
+  <P></P></DD></DL>
+<H3><A name=3Dlowlevel>Low-Level Capability Access</A></H3>
+<DL>
+  <DT><TT>setupterm(term, filenum, errret)</TT> This routine is called =
+to=20
+  initialize a terminal's description, without setting up the curses =
+screen=20
+  structures or changing the tty-driver mode bits. <TT>term</TT> is the=20
+  character string representing the name of the terminal being used.=20
+  <TT>filenum</TT> is the UNIX file descriptor of the terminal to be =
+used for=20
+  output. <TT>errret</TT> is a pointer to an integer, in which a success =
+or=20
+  failure indication is returned. The values returned can be 1 (all is =
+well), 0=20
+  (no such terminal), or -1 (some problem locating the terminfo =
+database).=20
+  <P>The value of <TT>term</TT> can be given as NULL, which will cause =
+the value=20
+  of <TT>TERM</TT> in the environment to be used. The <TT>errret</TT> =
+pointer=20
+  can also be given as NULL, meaning no error code is wanted. If =
+<TT>errret</TT>=20
+  is defaulted, and something goes wrong, <TT>setupterm()</TT> will =
+print an=20
+  appropriate error message and exit, rather than returning. Thus, a =
+simple=20
+  program can call setupterm(0, 1, 0) and not worry about initialization =
+errors.=20
+
+  <P>After the call to <TT>setupterm()</TT>, the global variable=20
+  <TT>cur_term</TT> is set to point to the current structure of terminal =
+
+  capabilities. By calling <TT>setupterm()</TT> for each terminal, and =
+saving=20
+  and restoring <TT>cur_term</TT>, it is possible for a program to use =
+two or=20
+  more terminals at once. <TT>Setupterm()</TT> also stores the names =
+section of=20
+  the terminal description in the global character array =
+<TT>ttytype[]</TT>.=20
+  Subsequent calls to <TT>setupterm()</TT> will overwrite this array, so =
+you'll=20
+  have to save it yourself if need be.=20
+  <P></P>
+  <DD></DD></DL>
+<H3><A name=3Ddebugging>Debugging</A></H3>NOTE: These functions are not =
+part of=20
+the standard curses SPI!=20
+<P>
+<DL>
+  <DT><TT>trace()</TT>=20
+  <DD>This function can be used to explicitly set a trace level. If the =
+trace=20
+  level is nonzero, execution of your program will generate a file =
+called=20
+  `trace' in the current working directory containing a report on the =
+library's=20
+  actions. Higher trace levels enable more detailed (and verbose) =
+reporting --=20
+  see comments attached to <TT>TRACE_</TT> defines in the =
+<TT>curses.h</TT> file=20
+  for details. (It is also possible to set a trace level by assigning a =
+trace=20
+  level value to the environment variable <TT>NCURSES_TRACE</TT>).=20
+  <DT><TT>_tracef()</TT>=20
+  <DD>This function can be used to output your own debugging =
+information. It is=20
+  only available only if you link with -lncurses_g. It can be used the =
+same way=20
+  as <TT>printf()</TT>, only it outputs a newline after the end of =
+arguments.=20
+  The output goes to a file called <TT>trace</TT> in the current =
+directory.=20
+</DD></DL>Trace logs can be difficult to interpret due to the sheer =
+volume of=20
+data dumped in them. There is a script called <B>tracemunch</B> included =
+with=20
+the <TT>ncurses</TT> distribution that can alleviate this problem =
+somewhat; it=20
+compacts long sequences of similar operations into more succinct =
+single-line=20
+pseudo-operations. These pseudo-ops can be distinguished by the fact =
+that they=20
+are named in capital letters.
+<P>
+<H2><A name=3Dhints>Hints, Tips, and Tricks</A></H2>The <TT>ncurses</TT> =
+manual=20
+pages are a complete reference for this library. In the remainder of =
+this=20
+document, we discuss various useful methods that may not be obvious from =
+the=20
+manual page descriptions.=20
+<P>
+<H3><A name=3Dcaution>Some Notes of Caution</A></H3>If you find yourself =
+thinking=20
+you need to use <TT>noraw()</TT> or <TT>nocbreak()</TT>, think again and =
+move=20
+carefully. It's probably better design to use <TT>getstr()</TT> or one =
+of its=20
+relatives to simulate cooked mode. The <TT>noraw()</TT> and =
+<TT>nocbreak()</TT>=20
+functions try to restore cooked mode, but they may end up clobbering =
+some=20
+control bits set before you started your application. Also, they have =
+always=20
+been poorly documented, and are likely to hurt your application's =
+usability with=20
+other curses libraries.=20
+<P>Bear in mind that <TT>refresh()</TT> is a synonym for=20
+<TT>wrefresh(stdscr)</TT>, and don't try to mix use of <TT>stdscr</TT> =
+with use=20
+of windows declared by <TT>newwin()</TT>; a <TT>refresh()</TT> call will =
+blow=20
+them off the screen. The right way to handle this is to use =
+<TT>subwin()</TT>,=20
+or not touch <TT>stdscr</TT> at all and tile your screen with declared =
+windows=20
+which you then <TT>wnoutrefresh()</TT> somewhere in your program event =
+loop,=20
+with a single <TT>doupdate()</TT> call to trigger actual repainting.=20
+<P>You are much less likely to run into problems if you design your =
+screen=20
+layouts to use tiled rather than overlapping windows. Historically, =
+curses=20
+support for overlapping windows has been weak, fragile, and poorly =
+documented.=20
+The <TT>ncurses</TT> library is not yet an exception to this rule.=20
+<P>There is a freeware panels library included in the <TT>ncurses</TT>=20
+distribution that does a pretty good job of strengthening the=20
+overlapping-windows facilities.=20
+<P>Try to avoid using the global variables LINES and COLS. Use=20
+<TT>getmaxyx()</TT> on the <TT>stdscr</TT> context instead. Reason: your =
+code=20
+may be ported to run in an environment with window resizes, in which =
+case=20
+several screens could be open with different sizes.=20
+<P>
+<H3><A name=3Dleaving>Temporarily Leaving <TT>ncurses</TT> =
+Mode</A></H3>Sometimes=20
+you will want to write a program that spends most of its time in screen =
+mode,=20
+but occasionally returns to ordinary `cooked' mode. A common reason for =
+this is=20
+to support shell-out. This behavior is simple to arrange in =
+<TT>ncurses</TT>.=20
+<P>To leave <TT>ncurses</TT> mode, call <TT>endwin()</TT> as you would =
+if you=20
+were intending to terminate the program. This will take the screen back =
+to=20
+cooked mode; you can do your shell-out. When you want to return to=20
+<TT>ncurses</TT> mode, simply call <TT>refresh()</TT> or =
+<TT>doupdate()</TT>.=20
+This will repaint the screen.=20
+<P>There is a boolean function, <TT>isendwin()</TT>, which code can use =
+to test=20
+whether <TT>ncurses</TT> screen mode is active. It returns <TT>TRUE</TT> =
+in the=20
+interval between an <TT>endwin()</TT> call and the following =
+<TT>refresh()</TT>,=20
+<TT>FALSE</TT> otherwise.=20
+<P>Here is some sample code for shellout: <PRE>    addstr("Shelling =
+out...");
+    def_prog_mode();           /* save current tty modes */
+    endwin();                  /* restore original tty modes */
+    system("sh");              /* run shell */
+    addstr("returned.\n");     /* prepare return message */
+    refresh();                 /* restore save modes, repaint screen */
+</PRE>
+<H3><A name=3Dxterm>Using <TT>ncurses</TT> Under =
+<TT>xterm</TT></A></H3>A resize=20
+operation in X sends SIGWINCH to the application running under xterm. =
+The=20
+<TT>ncurses</TT> library does not catch this signal, because it cannot =
+in=20
+general know how you want the screen re-painted. You will have to write =
+the=20
+SIGWINCH handler yourself.=20
+<P>The easiest way to code your SIGWINCH handler is to have it do an=20
+<TT>endwin</TT>, followed by an <TT>initscr</TT> and a screen repaint =
+you code=20
+yourself. The <TT>initscr</TT> will pick up the new screen size from the =
+xterm's=20
+environment.=20
+<H3><A name=3Dscreens>Handling Multiple Terminal Screens</A></H3>The=20
+<TT>initscr()</TT> function actually calls a function named =
+<TT>newterm()</TT>=20
+to do most of its work. If you are writing a program that opens multiple =
+
+terminals, use <TT>newterm()</TT> directly.=20
+<P>For each call, you will have to specify a terminal type and a pair of =
+file=20
+pointers; each call will return a screen reference, and <TT>stdscr</TT> =
+will be=20
+set to the last one allocated. You will switch between screens with the=20
+<TT>set_term</TT> call. Note that you will also have to call=20
+<TT>def_shell_mode</TT> and <TT>def_prog_mode</TT> on each tty yourself. =
+
+<P>
+<H3><A name=3Dtesting>Testing for Terminal =
+Capabilities</A></H3>Sometimes you may=20
+want to write programs that test for the presence of various =
+capabilities before=20
+deciding whether to go into <TT>ncurses</TT> mode. An easy way to do =
+this is to=20
+call <TT>setupterm()</TT>, then use the functions <TT>tigetflag()</TT>,=20
+<TT>tigetnum()</TT>, and <TT>tigetstr()</TT> to do your testing.=20
+<P>A particularly useful case of this often comes up when you want to =
+test=20
+whether a given terminal type should be treated as `smart' =
+(cursor-addressable)=20
+or `stupid'. The right way to test this is to see if the return value of =
+
+<TT>tigetstr("cup")</TT> is non-NULL. Alternatively, you can include the =
+
+<TT>term.h</TT> file and test the value of the macro =
+<TT>cursor_address</TT>.=20
+<P>
+<H3><A name=3Dtuning>Tuning for Speed</A></H3>Use the =
+<TT>addchstr()</TT> family=20
+of functions for fast screen-painting of text when you know the text =
+doesn't=20
+contain any control characters. Try to make attribute changes infrequent =
+on your=20
+screens. Don't use the <TT>immedok()</TT> option!=20
+<P>
+<H3><A name=3Dspecial>Special Features of <TT>ncurses</TT></A></H3>When =
+running on=20
+PC-clones, <TT>ncurses</TT> has enhanced support for the IBM high-half =
+and ROM=20
+characters. The <TT>A_ALTCHARSET</TT> highlight, enables display of both =
+
+high-half ACS graphics and the PC ROM graphics 0-31 that are normally=20
+interpreted as control characters.=20
+<P>The <TT>wresize()</TT> function allows you to resize a window in =
+place.=20
+<P>
+<H2><A name=3Dcompat>Compatibility with Older Versions</H2>Despite our =
+best=20
+efforts, there are some differences between <TT>ncurses</TT> and the=20
+(undocumented!) behavior of older curses implementations. These arise =
+from=20
+ambiguities or omissions in the documentation of the API.=20
+<H3><A name=3Drefbug>Refresh of Overlapping Windows</A></H3>If you =
+define two=20
+windows A and B that overlap, and then alternately scribble on and =
+refresh them,=20
+the changes made to the overlapping region under historic =
+<TT>curses</TT>=20
+versions were often not documented precisely.=20
+<P>To understand why this is a problem, remember that screen updates are =
+
+calculated between two representations of the <EM>entire</EM> display. =
+The=20
+documentation says that when you refresh a window, it is first copied to =
+to the=20
+virtual screen, and then changes are calculated to update the physical =
+screen=20
+(and applied to the terminal). But "copied to" is not very specific, and =
+subtle=20
+differences in how copying works can produce different behaviors in the =
+case=20
+where two overlapping windows are each being refreshed at unpredictable=20
+intervals.=20
+<P>What happens to the overlapping region depends on what=20
+<TT>wnoutrefresh()</TT> does with its argument -- what portions of the =
+argument=20
+window it copies to the virtual screen. Some implementations do "change =
+copy",=20
+copying down only locations in the window that have changed (or been =
+marked=20
+changed with <TT>wtouchln()</TT> and friends). Some implementations do =
+"entire=20
+copy", copying <EM>all</EM> window locations to the virtual screen =
+whether or=20
+not they have changed.=20
+<P>The <TT>ncurses</TT> library itself has not always been consistent on =
+this=20
+score. Due to a bug, versions 1.8.7 to 1.9.8a did entire copy. Versions =
+1.8.6=20
+and older, and versions 1.9.9 and newer, do change copy.=20
+<P>For most commercial curses implementations, it is not documented and =
+not=20
+known for sure (at least not to the <TT>ncurses</TT> maintainers) =
+whether they=20
+do change copy or entire copy. We know that System V release 3 curses =
+has logic=20
+in it that looks like an attempt to do change copy, but the surrounding =
+logic=20
+and data representations are sufficiently complex, and our knowledge=20
+sufficiently indirect, that it's hard to know whether this is reliable. =
+It is=20
+not clear what the SVr4 documentation and XSI standard intend. The XSI =
+Curses=20
+standard barely mentions wnoutrefresh(); the SVr4 documents seem to be=20
+describing entire-copy, but it is possible with some effort and =
+straining to=20
+read them the other way.=20
+<P>It might therefore be unwise to rely on either behavior in programs =
+that=20
+might have to be linked with other curses implementations. Instead, you =
+can do=20
+an explicit <TT>touchwin()</TT> before the <TT>wnoutrefresh()</TT> call =
+to=20
+guarantee an entire-contents copy anywhere.=20
+<P>The really clean way to handle this is to use the panels library. If, =
+when=20
+you want a screen update, you do <TT>update_panels()</TT>, it will do =
+all the=20
+necessary <TT>wnoutrfresh()</TT> calls for whatever panel stacking order =
+you=20
+have defined. Then you can do one <TT>doupdate()</TT> and there will be =
+a=20
+<EM>single</EM> burst of physical I/O that will do all your updates.=20
+<P>
+<H3><A name=3Dbackbug>Background Erase</A></H3>If you have been using a =
+very old=20
+versions of <TT>ncurses</TT> (1.8.7 or older) you may be surprised by =
+the=20
+behavior of the erase functions. In older versions, erased areas of a =
+window=20
+were filled with a blank modified by the window's current attribute (as =
+set by=20
+<B>wattrset()</B>, <B>wattron()</B>, <B>wattroff()</B> and friends).=20
+<P>In newer versions, this is not so. Instead, the attribute of erased =
+blanks is=20
+normal unless and until it is modified by the functions =
+<TT>bkgdset()</TT> or=20
+<TT>wbkgdset()</TT>.=20
+<P>This change in behavior conforms <TT>ncurses</TT> to System V Release =
+4 and=20
+the XSI Curses standard.=20
+<P>
+<H2><A name=3Dxsifuncs>XSI Curses Conformance</A></H2>The =
+<TT>ncurses</TT> library=20
+is intended to be base-level conformant with the XSI Curses standard =
+from=20
+X/Open. May extended-level features (in fact, almost all features not =
+directly=20
+concerned with wide characters and internationalization) are also =
+supported.=20
+<P>One effect of XSI conformance is the change in behavior described =
+under <A=20
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#backbug">"Backgrou=
+nd Erase=20
+-- Compatibility with Old Versions"</A>.=20
+<P>Also, <TT>ncurses</TT> meets the XSI requirement that every macro =
+entry point=20
+have a corresponding function which may be linked (and will be=20
+prototype-checked) if the macro definition is disabled with =
+<TT>#undef</TT>.=20
+<P>
+<H1><A name=3Dpanels>The Panels Library</A></H1>The <TT>ncurses</TT> =
+library by=20
+itself provides good support for screen displays in which the windows =
+are tiled=20
+(non-overlapping). In the more general case that windows may overlap, =
+you have=20
+to use a series of <CODE>wnoutrefresh()</CODE> calls followed by a=20
+<CODE>doupdate()</CODE>, and be careful about the order you do the =
+window=20
+refreshes in. It has to be bottom-upwards, otherwise parts of windows =
+that=20
+should be obscured will show through.=20
+<P>When your interface design is such that windows may dive deeper into =
+the=20
+visibility stack or pop to the top at runtime, the resulting =
+book-keeping can be=20
+tedious and difficult to get right. Hence the panels library.=20
+<P>The <CODE>panel</CODE> library first appeared in AT&amp;T System V. =
+The=20
+version documented here is the freeware <CODE>panel</CODE> code =
+distributed with=20
+<CODE>ncurses</CODE>.=20
+<H2><A name=3Dpcompile>Compiling With the Panels Library</A></H2>Your =
+panels-using=20
+modules must import the panels library declarations with <PRE>	  =
+#include &lt;panel.h&gt;
+</PRE>and must be linked explicitly with the panels library using an=20
+<CODE>-lpanel</CODE> argument. Note that they must also link the=20
+<TT>ncurses</TT> library with <CODE>-lncurses</CODE>. Most modern =
+linkers are=20
+two-pass and will accept either order, but it is still good practice to =
+put=20
+<CODE>-lpanel</CODE> first and <CODE>-lncurses</CODE> second.=20
+<H2><A name=3Dpoverview>Overview of Panels</A></H2>A panel object is a =
+window that=20
+is implicitly treated as part of a <DFN>deck</DFN> including all other =
+panel=20
+objects. The deck has an implicit bottom-to-top visibility order. The =
+panels=20
+library includes an update function (analogous to =
+<CODE>refresh()</CODE>) that=20
+displays all panels in the deck in the proper order to resolve overlaps. =
+The=20
+standard window, <CODE>stdscr</CODE>, is considered below all panels.=20
+<P>Details on the panels functions are available in the man pages. We'll =
+just=20
+hit the highlights here.=20
+<P>You create a panel from a window by calling <CODE>new_panel()</CODE> =
+on a=20
+window pointer. It then becomes the top of the deck. The panel's window =
+is=20
+available as the value of <CODE>panel_window()</CODE> called with the =
+panel=20
+pointer as argument.
+<P>You can delete a panel (removing it from the deck) with=20
+<CODE>del_panel</CODE>. This will not deallocate the associated window; =
+you have=20
+to do that yourself. You can replace a panel's window with a different =
+window by=20
+calling <CODE>replace_window</CODE>. The new window may be of different =
+size;=20
+the panel code will re-compute all overlaps. This operation doesn't =
+change the=20
+panel's position in the deck.=20
+<P>To move a panel's window, use <CODE>move_panel()</CODE>. The=20
+<CODE>mvwin()</CODE> function on the panel's window isn't sufficient =
+because it=20
+doesn't update the panels library's representation of where the windows =
+are.=20
+This operation leaves the panel's depth, contents, and size unchanged.=20
+<P>Two functions (<CODE>top_panel()</CODE>, <CODE>bottom_panel()</CODE>) =
+are=20
+provided for rearranging the deck. The first pops its argument window to =
+the top=20
+of the deck; the second sends it to the bottom. Either operation leaves =
+the=20
+panel's screen location, contents, and size unchanged.=20
+<P>The function <CODE>update_panels()</CODE> does all the=20
+<CODE>wnoutrefresh()</CODE> calls needed to prepare for =
+<CODE>doupdate()</CODE>=20
+(which you must call yourself, afterwards).=20
+<P>Typically, you will want to call <CODE>update_panels()</CODE> and=20
+<TT>doupdate()</TT> just before accepting command input, once in each =
+cycle of=20
+interaction with the user. If you call <CODE>update_panels()</CODE> =
+after each=20
+and every panel write, youll generate a lot of unnecessary refresh =
+activity and=20
+screen flicker.=20
+<P>
+<H2><A name=3Dpstdscr>Panels, Input, and the Standard Screen</A></H2>You =
+shouldn't=20
+mix <CODE>wnoutrefresh()</CODE> or <CODE>wrefresh()</CODE> operations =
+with=20
+panels code; this will work only if the argument window is either in the =
+top=20
+panel or un-obscured by any other panels.=20
+<P>The <CODE>stsdcr</CODE> window is a special case. It is considered =
+below all=20
+panels. Because changes to panels may obscure parts of =
+<CODE>stdscr</CODE>,=20
+though, you should call <CODE>update_panels()</CODE> before=20
+<CODE>doupdate()</CODE> even when you only change <CODE>stdscr</CODE>.=20
+<P>Note that <CODE>wgetch</CODE> automatically calls =
+<CODE>wrefresh</CODE>.=20
+Therefore, before requesting input from a panel window, you need to be =
+sure that=20
+the panel is totally un-obscured.=20
+<P>There is presently no way to display changes to one obscured panel =
+without=20
+repainting all panels.=20
+<P>
+<H2><A name=3Dhiding>Hiding Panels</A></H2>It's possible to remove a =
+panel from=20
+the deck temporarily; use <CODE>hide_panel</CODE> for this. You can =
+un-hide a=20
+panel with <CODE>show_panel()</CODE>. The predicate function=20
+<CODE>panel_hidden</CODE> tests whether or not a panel is hidden.=20
+<P>The <CODE>panel_update</CODE> code ignores hidden panels. You cannot =
+do=20
+<CODE>top_panel()</CODE> or <CODE>bottom_panel</CODE> on a hidden =
+panel(). Other=20
+panels operations are applicable.=20
+<P>
+<H2><A name=3Dpmisc>Miscellaneous Other Facilities</A></H2>It's possible =
+to=20
+navigate the deck using the functions <CODE>panel_above()</CODE> and=20
+<CODE>panel_below</CODE>. Handed a panel pointer, they return the panel =
+above or=20
+below that panel. Handed <CODE>NULL</CODE>, they return the bottom-most =
+or=20
+top-most panel.=20
+<P>Every panel has an associated user pointer, not used by the panel =
+code, to=20
+which you can attach application data. See the man page documentation of =
+
+<CODE>set_panel_userptr()</CODE> and <CODE>panel_userptr</CODE> for =
+details.=20
+<P>
+<H1><A name=3Dmenu>The Menu Library</A></H1>A menu is a screen display =
+that=20
+assists the user to choose some subset of a given set of items. The=20
+<CODE>menu</CODE> library is a curses extension that supports easy =
+programming=20
+of menu hierarchies with a uniform but flexible interface.=20
+<P>The <CODE>menu</CODE> library first appeared in AT&amp;T System V. =
+The=20
+version documented here is the freeware <CODE>menu</CODE> code =
+distributed with=20
+<CODE>ncurses</CODE>.=20
+<P>
+<H2><A name=3Dmcompile>Compiling With the menu Library</A></H2>Your =
+menu-using=20
+modules must import the menu library declarations with <PRE>	  #include =
+&lt;menu.h&gt;
+</PRE>and must be linked explicitly with the menus library using an=20
+<CODE>-lmenu</CODE> argument. Note that they must also link the =
+<TT>ncurses</TT>=20
+library with <CODE>-lncurses</CODE>. Most modern linkers are two-pass =
+and will=20
+accept either order, but it is still good practice to put =
+<CODE>-lmenu</CODE>=20
+first and <CODE>-lncurses</CODE> second.=20
+<H2><A name=3Dmoverview>Overview of Menus</A></H2>The menus created by =
+this=20
+library consist of collections of <DFN>items</DFN> including a name =
+string part=20
+and a description string part. To make menus, you create groups of these =
+items=20
+and connect them with menu frame objects.=20
+<P>The menu can then by <DFN>posted</DFN>, that is written to an =
+associated=20
+window. Actually, each menu has two associated windows; a containing =
+window in=20
+which the programmer can scribble titles or borders, and a subwindow in =
+which=20
+the menu items proper are displayed. If this subwindow is too small to =
+display=20
+all the items, it will be a scrollable viewport on the collection of =
+items.=20
+<P>A menu may also be <DFN>unposted</DFN> (that is, undisplayed), and =
+finally=20
+freed to make the storage associated with it and its items available for =
+re-use.=20
+
+<P>The general flow of control of a menu program looks like this:=20
+<OL>
+  <LI>Initialize <CODE>curses</CODE>.=20
+  <LI>Create the menu items, using <CODE>new_item()</CODE>.=20
+  <LI>Create the menu using <CODE>new_menu()</CODE>.=20
+  <LI>Post the menu using <CODE>menu_post()</CODE>.=20
+  <LI>Refresh the screen.=20
+  <LI>Process user requests via an input loop.=20
+  <LI>Unpost the menu using <CODE>menu_unpost()</CODE>.=20
+  <LI>Free the menu, using <CODE>free_menu()</CODE>.=20
+  <LI>Free the items using <CODE>free_item()</CODE>.=20
+  <LI>Terminate <CODE>curses</CODE>. </LI></OL>
+<H2><A name=3Dmselect>Selecting items</A></H2>Menus may be multi-valued =
+or (the=20
+default) single-valued (see the manual page <CODE>mitem_opts(3x)</CODE> =
+to see=20
+how to change the default). Both types always have a <DFN>current =
+item</DFN>.=20
+<P>From a single-valued menu you can read the selected value simply by =
+looking=20
+at the current item. From a multi-valued menu, you get the selected set =
+by=20
+looping through the items applying the <CODE>item_value()</CODE> =
+predicate=20
+function. Your menu-processing code can use the function=20
+<CODE>set_item_value()</CODE> to flag the items in the select set.=20
+<P>Menu items can be made un-selectable using =
+<CODE>set_item_opts()</CODE> or=20
+<CODE>item_opts_off()</CODE> with the <CODE>O_SELECTABLE</CODE> =
+argument. This=20
+is the only option so far defined for menus, but it is good practice to =
+code as=20
+though other option bits might be on.=20
+<P>
+<H2><A name=3Dmdisplay>Menu Display</A></H2>The menu library calculates =
+a minimum=20
+display size for your window, based on the following variables:=20
+<P>
+<UL>
+  <LI>The number and maximum length of the menu items=20
+  <LI>Whether the O_ROWMAJOR option is enabled=20
+  <LI>Whether display of descriptions is enabled=20
+  <LI>Whatever menu format may have been set by the programmer=20
+  <LI>The length of the menu mark string used for highlighting selected =
+items=20
+  </LI></UL>The function <CODE>set_menu_format()</CODE> allows you to =
+set the=20
+maximum size of the viewport or <DFN>menu page</DFN> that will be used =
+to=20
+display menu items. You can retrieve any format associated with a menu =
+with=20
+<CODE>menu_format()</CODE>. The default format is rows=3D16, =
+columns=3D1.=20
+<P>The actual menu page may be smaller than the format size. This =
+depends on the=20
+item number and size and whether O_ROWMAJOR is on. This option (on by =
+default)=20
+causes menu items to be displayed in a `raster-scan' pattern, so that if =
+more=20
+than one item will fit horizontally the first couple of items are =
+side-by-side=20
+in the top row. The alternative is column-major display, which tries to =
+put the=20
+first several items in the first column.=20
+<P>As mentioned above, a menu format not large enough to allow all items =
+to fit=20
+on-screen will result in a menu display that is vertically scrollable.=20
+<P>You can scroll it with requests to the menu driver, which will be =
+described=20
+in the section on <A=20
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#minput">menu =
+input=20
+handling</A>.=20
+<P>Each menu has a <DFN>mark string</DFN> used to visually tag selected =
+items;=20
+see the <CODE>menu_mark(3x)</CODE> manual page for details. The mark =
+string=20
+length also influences the menu page size.=20
+<P>The function <CODE>scale_menu()</CODE> returns the minimum display =
+size that=20
+the menu code computes from all these factors. There are other menu =
+display=20
+attributes including a select attribute, an attribute for selectable =
+items, an=20
+attribute for unselectable items, and a pad character used to separate =
+item name=20
+text from description text. These have reasonable defaults which the =
+library=20
+allows you to change (see the <CODE>menu_attribs(3x)</CODE>manual page.=20
+<P>
+<H2><A name=3Dmwindows>Menu Windows</A></H2>Each menu has, as mentioned=20
+previously, a pair of associated windows. Both these windows are painted =
+when=20
+the menu is posted and erased when the menu is unposted.=20
+<P>The outer or frame window is not otherwise touched by the menu =
+routines. It=20
+exists so the programmer can associate a title, a border, or perhaps =
+help text=20
+with the menu and have it properly refreshed or erased at post/unpost =
+time. The=20
+inner window or <DFN>subwindow</DFN> is where the current menu page is=20
+displayed.=20
+<P>By default, both windows are <CODE>stdscr</CODE>. You can set them =
+with the=20
+functions in <CODE>menu_win(3x)</CODE>.=20
+<P>When you call <CODE>menu_post()</CODE>, you write the menu to its =
+subwindow.=20
+When you call <CODE>menu_unpost()</CODE>, you erase the subwindow, =
+However,=20
+neither of these actually modifies the screen. To do that, call=20
+<CODE>wrefresh()</CODE> or some equivalent.=20
+<P>
+<H2><A name=3Dminput>Processing Menu Input</A></H2>The main loop of your =
+
+menu-processing code should call <CODE>menu_driver()</CODE> repeatedly. =
+The=20
+first argument of this routine is a menu pointer; the second is a menu =
+command=20
+code. You should write an input-fetching routine that maps input =
+characters to=20
+menu command codes, and pass its output to <CODE>menu_driver()</CODE>. =
+The menu=20
+command codes are fully documented in <CODE>menu_driver(3x)</CODE>.=20
+<P>The simplest group of command codes is <CODE>REQ_NEXT_ITEM</CODE>,=20
+<CODE>REQ_PREV_ITEM</CODE>, <CODE>REQ_FIRST_ITEM</CODE>,=20
+<CODE>REQ_LAST_ITEM</CODE>, <CODE>REQ_UP_ITEM</CODE>,=20
+<CODE>REQ_DOWN_ITEM</CODE>, <CODE>REQ_LEFT_ITEM</CODE>,=20
+<CODE>REQ_RIGHT_ITEM</CODE>. These change the currently selected item. =
+These=20
+requests may cause scrolling of the menu page if it only partially =
+displayed.=20
+<P>There are explicit requests for scrolling which also change the =
+current item=20
+(because the select location does not change, but the item there does). =
+These=20
+are <CODE>REQ_SCR_DLINE</CODE>, <CODE>REQ_SCR_ULINE</CODE>,=20
+<CODE>REQ_SCR_DPAGE</CODE>, and <CODE>REQ_SCR_UPAGE</CODE>.=20
+<P>The <CODE>REQ_TOGGLE_ITEM</CODE> selects or deselects the current =
+item. It is=20
+for use in multi-valued menus; if you use it with =
+<CODE>O_ONEVALUE</CODE> on,=20
+you'll get an error return (<CODE>E_REQUEST_DENIED</CODE>).=20
+<P>Each menu has an associated pattern buffer. The =
+<CODE>menu_driver()</CODE>=20
+logic tries to accumulate printable ASCII characters passed in in that =
+buffer;=20
+when it matches a prefix of an item name, that item (or the next =
+matching item)=20
+is selected. If appending a character yields no new match, that =
+character is=20
+deleted from the pattern buffer, and <CODE>menu_driver()</CODE> returns=20
+<CODE>E_NO_MATCH</CODE>.=20
+<P>Some requests change the pattern buffer directly:=20
+<CODE>REQ_CLEAR_PATTERN</CODE>, <CODE>REQ_BACK_PATTERN</CODE>,=20
+<CODE>REQ_NEXT_MATCH</CODE>, <CODE>REQ_PREV_MATCH</CODE>. The latter two =
+are=20
+useful when pattern buffer input matches more than one item in a =
+multi-valued=20
+menu.=20
+<P>Each successful scroll or item navigation request clears the pattern =
+buffer.=20
+It is also possible to set the pattern buffer explicitly with=20
+<CODE>set_menu_pattern()</CODE>.=20
+<P>Finally, menu driver requests above the constant =
+<CODE>MAX_COMMAND</CODE> are=20
+considered application-specific commands. The <CODE>menu_driver()</CODE> =
+code=20
+ignores them and returns <CODE>E_UNKNOWN_COMMAND</CODE>.=20
+<H2><A name=3Dmmisc>Miscellaneous Other Features</A></H2>Various menu =
+options can=20
+affect the processing and visual appearance and input processing of =
+menus. See=20
+<CODE>menu_opts(3x) for details.</CODE>=20
+<P>It is possible to change the current item from application code; this =
+is=20
+useful if you want to write your own navigation requests. It is also =
+possible to=20
+explicitly set the top row of the menu display. See=20
+<CODE>mitem_current(3x)</CODE>. If your application needs to change the =
+menu=20
+subwindow cursor for any reason, <CODE>pos_menu_cursor()</CODE> will =
+restore it=20
+to the correct location for continuing menu driver processing.=20
+<P>It is possible to set hooks to be called at menu initialization and =
+wrapup=20
+time, and whenever the selected item changes. See =
+<CODE>menu_hook(3x)</CODE>.=20
+<P>Each item, and each menu, has an associated user pointer on which you =
+can=20
+hang application data. See <CODE>mitem_userptr(3x)</CODE> and=20
+<CODE>menu_userptr(3x)</CODE>.=20
+<P>
+<H1><A name=3Dform>The Forms Library</A></H1>The <CODE>form</CODE> =
+library is a=20
+curses extension that supports easy programming of on-screen forms for =
+data=20
+entry and program control.=20
+<P>The <CODE>form</CODE> library first appeared in AT&amp;T System V. =
+The=20
+version documented here is the freeware <CODE>form</CODE> code =
+distributed with=20
+<CODE>ncurses</CODE>.=20
+<P>
+<H2><A name=3Dfcompile>Compiling With the form Library</A></H2>Your =
+form-using=20
+modules must import the form library declarations with <PRE>	  #include =
+&lt;form.h&gt;
+</PRE>and must be linked explicitly with the forms library using an=20
+<CODE>-lform</CODE> argument. Note that they must also link the =
+<TT>ncurses</TT>=20
+library with <CODE>-lncurses</CODE>. Most modern linkers are two-pass =
+and will=20
+accept either order, but it is still good practice to put =
+<CODE>-lform</CODE>=20
+first and <CODE>-lncurses</CODE> second.=20
+<P>
+<H2><A name=3Dfoverview>Overview of Forms</A></H2>A form is a collection =
+of=20
+fields; each field may be either a label (explanatory text) or a =
+data-entry=20
+location. Long forms may be segmented into pages; each entry to a new =
+page=20
+clears the screen.=20
+<P>To make forms, you create groups of fields and connect them with form =
+frame=20
+objects; the form library makes this relatively simple.=20
+<P>Once defined, a form can be <DFN>posted</DFN>, that is written to an=20
+associated window. Actually, each form has two associated windows; a =
+containing=20
+window in which the programmer can scribble titles or borders, and a =
+subwindow=20
+in which the form fields proper are displayed.=20
+<P>As the form user fills out the posted form, navigation and editing =
+keys=20
+support movement between fields, editing keys support modifying field, =
+and plain=20
+text adds to or changes data in a current field. The form library allows =
+you=20
+(the forms designer) to bind each navigation and editing key to any =
+keystroke=20
+accepted by <TT>curses</TT> Fields may have validation conditions on =
+them, so=20
+that they check input data for type and value. The form library supplies =
+a rich=20
+set of pre-defined field types, and makes it relatively easy to define =
+new ones.=20
+
+<P>Once its transaction is completed (or aborted), a form may be=20
+<DFN>unposted</DFN> (that is, undisplayed), and finally freed to make =
+the=20
+storage associated with it and its items available for re-use.=20
+<P>The general flow of control of a form program looks like this:=20
+<OL>
+  <LI>Initialize <CODE>curses</CODE>.=20
+  <LI>Create the form fields, using <CODE>new_field()</CODE>.=20
+  <LI>Create the form using <CODE>new_form()</CODE>.=20
+  <LI>Post the form using <CODE>form_post()</CODE>.=20
+  <LI>Refresh the screen.=20
+  <LI>Process user requests via an input loop.=20
+  <LI>Unpost the form using <CODE>form_unpost()</CODE>.=20
+  <LI>Free the form, using <CODE>free_form()</CODE>.=20
+  <LI>Free the fields using <CODE>free_field()</CODE>.=20
+  <LI>Terminate <CODE>curses</CODE>. </LI></OL>Note that this looks much =
+like a=20
+menu program; the form library handles tasks which are in many ways =
+similar, and=20
+its interface was obviously designed to resemble that of the <A=20
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#menu">menu =
+library</A>=20
+wherever possible.=20
+<P>In forms programs, however, the `process user requests' is somewhat =
+more=20
+complicated than for menus. Besides menu-like navigation operations, the =
+menu=20
+driver loop has to support field editing and data validation.=20
+<P>
+<H2><A name=3Dfcreate>Creating and Freeing Fields and Forms</A></H2>The =
+basic=20
+function for creating fields is <TT>new_field()</TT>:=20
+<P><PRE>FIELD *new_field(int height, int width,   /* new field size */=20
+                 int top, int left,       /* upper left corner */
+                 int offscreen,           /* number of offscreen rows */
+                 int nbuf);               /* number of working buffers =
+*/
+</PRE>Menu items always occupy a single row, but forms fields may have =
+multiple=20
+rows. So <TT>new_field()</TT> requires you to specify a width and height =
+(the=20
+first two arguments, which mist both be greater than zero).=20
+<P>You must also specify the location of the field's upper left corner =
+on the=20
+screen (the third and fourth arguments, which must be zero or greater). =
+Note=20
+that these coordinates are relative to the form subwindow, which will =
+coincide=20
+with <TT>stdscr</TT> by default but need not be <TT>stdscr</TT> if =
+you've done=20
+an explicit <TT>set_form_window()</TT> call.=20
+<P>The fifth argument allows you to specify a number of off-screen rows. =
+If this=20
+is zero, the entire field will always be displayed. If it is nonzero, =
+the form=20
+will be scrollable, with only one screen-full (initially the top part) =
+displayed=20
+at any given time. If you make a field dynamic and grow it so it will no =
+longer=20
+fit on the screen, the form will become scrollable even if the =
+\fBoffscreen\fR=20
+argument was initially zero.=20
+<P>The forms library allocates one working buffer per field; the size of =
+each=20
+buffer is <TT>((height + offscreen)*width + 1</TT>, one character for =
+each=20
+position in the field plus a NUL terminator. The sixth argument is the =
+number of=20
+additional data buffers to allocate for the field; your application can =
+use them=20
+for its own purposes.=20
+<P><PRE>FIELD *dup_field(FIELD *field,            /* field to copy */
+                 int top, int left);      /* location of new copy */
+</PRE>The function <TT>dup_field()</TT> duplicates an existing field at =
+a new=20
+location. Size and buffering information are copied; some attribute =
+flags and=20
+status bits are not (see the <TT>form_field_new(3X)</TT> for details).=20
+<P><PRE>FIELD *link_field(FIELD *field,           /* field to copy */
+                  int top, int left);     /* location of new copy */
+</PRE>The function <TT>link_field()</TT> also duplicates an existing =
+field at a=20
+new location. The difference from <TT>dup_field()</TT> is that it =
+arranges for=20
+the new field's buffer to be shared with the old one.=20
+<P>Besides the obvious use in making a field editable from two different =
+form=20
+pages, linked fields give you a way to hack in dynamic labels. If you =
+declare=20
+several fields linked to an original, and then make them inactive, =
+changes from=20
+the original will still be propagated to the linked fields.=20
+<P>As with duplicated fields, linked fields have attribute bits separate =
+from=20
+the original.=20
+<P>As you might guess, all these field-allocations return <TT>NULL</TT> =
+if the=20
+field allocation is not possible due to an out-of-memory error or =
+out-of-bounds=20
+arguments.=20
+<P>To connect fields to a form, use=20
+<P><PRE>FORM *new_form(FIELD **fields);
+</PRE>This function expects to see a NULL-terminated array of field =
+pointers.=20
+Said fields are connected to a newly-allocated form object; its address =
+is=20
+returned (or else NULL if the allocation fails).=20
+<P>Note that <TT>new_field()</TT> does <EM>not</EM> copy the pointer =
+array into=20
+private storage; if you modify the contents of the pointer array during =
+forms=20
+processing, all manner of bizarre things might happen. Also note that =
+any given=20
+field may only be connected to one form.=20
+<P>The functions <TT>free_field()</TT> and <TT>free_form</TT> are =
+available to=20
+free field and form objects. It is an error to attempt to free a field =
+connected=20
+to a form, but not vice-versa; thus, you will generally free your form =
+objects=20
+first.=20
+<P>
+<H2><A name=3Dfattributes>Fetching and Changing Field =
+Attributes</A></H2>Each form=20
+field has a number of location and size attributes associated with it. =
+There are=20
+other field attributes used to control display and editing of the field. =
+Some=20
+(for example, the \fBO_STATIC\fR bit) involve sufficient complications =
+to be=20
+covered in sections of their own later on. We cover the functions used =
+to get=20
+and set several basic attributes here.=20
+<P>When a field is created, the attributes not specified by the=20
+<TT>new_field</TT> function are copied from an invisible system default =
+field.=20
+In attribute-setting and -fetching functions, the argument NULL is taken =
+to mean=20
+this field. Changes to it persist as defaults until your forms =
+application=20
+terminates.=20
+<P>
+<H3><A name=3Dfsizes>Fetching Size and Location Data</A></H3>You can =
+retrieve=20
+field sizes and locations through:=20
+<P><PRE>int field_info(FIELD *field,              /* field from which to =
+fetch */
+               int *height, *int width,   /* field size */=20
+               int *top, int *left,       /* upper left corner */
+               int *offscreen,            /* number of offscreen rows */
+               int *nbuf);                /* number of working buffers =
+*/
+</PRE>This function is a sort of inverse of <TT>new_field()</TT>; =
+instead of=20
+setting size and location attributes of a new field, it fetches them =
+from an=20
+existing one.=20
+<P>
+<H3><A name=3Dflocation>Changing the Field Location</A></H3>If is =
+possible to move=20
+a field's location on the screen:=20
+<P><PRE>int move_field(FIELD *field,              /* field to alter */
+               int top, int left);        /* new upper-left corner */
+</PRE>You can, of course. query the current location through=20
+<TT>field_info()</TT>.=20
+<H3><A name=3Dfjust>The Justification Attribute</A></H3>One-line fields =
+may be=20
+unjustified, justified right, justified left, or centered. Here is how =
+you=20
+manipulate this attribute:=20
+<P><PRE>int set_field_just(FIELD *field,          /* field to alter */
+                   int justmode);         /* mode to set */
+
+int field_just(FIELD *field);             /* fetch mode of field */
+</PRE>The mode values accepted and returned by this functions are =
+preprocessor=20
+macros <TT>NO_JUSTIFICATION</TT>, <TT>JUSTIFY_RIGHT</TT>, =
+<TT>JUSTIFY_LEFT</TT>,=20
+or <TT>JUSTIFY_CENTER</TT>.=20
+<P>
+<H3><A name=3Dfdispatts>Field Display Attributes</A></H3>For each field, =
+you can=20
+set a foreground attribute for entered characters, a background =
+attribute for=20
+the entire field, and a pad character for the unfilled portion of the =
+field. You=20
+can also control pagination of the form.=20
+<P>This group of four field attributes controls the visual appearance of =
+the=20
+field on the screen, without affecting in any way the data in the field =
+buffer.=20
+<P><PRE>int set_field_fore(FIELD *field,          /* field to alter */
+                   chtype attr);          /* attribute to set */=20
+
+chtype field_fore(FIELD *field);          /* field to query */
+
+int set_field_back(FIELD *field,          /* field to alter */
+                   chtype attr);          /* attribute to set */=20
+
+chtype field_back(FIELD *field);          /* field to query */
+
+int set_field_pad(FIELD *field,           /* field to alter */
+                 int pad);                /* pad character to set */=20
+
+chtype field_pad(FIELD *field);
+
+int set_new_page(FIELD *field,            /* field to alter */
+                 int flag);               /* TRUE to force new page */=20
+
+chtype new_page(FIELD *field);            /* field to query */
+</PRE>The attributes set and returned by the first four functions are =
+normal=20
+<TT>curses(3x)</TT> display attribute values (<TT>A_STANDOUT</TT>,=20
+<TT>A_BOLD</TT>, <TT>A_REVERSE</TT> etc). The page bit of a field =
+controls=20
+whether it is displayed at the start of a new form screen.=20
+<P>
+<H3><A name=3Dfoptions>Field Option Bits</A></H3>There is also a large =
+collection=20
+of field option bits you can set to control various aspects of forms =
+processing.=20
+You can manipulate them with these functions: <PRE>int =
+set_field_opts(FIELD *field,          /* field to alter */
+                   int attr);             /* attribute to set */=20
+
+int field_opts_on(FIELD *field,           /* field to alter */
+                  int attr);              /* attributes to turn on */=20
+
+int field_opts_off(FIELD *field,          /* field to alter */
+                   int attr);             /* attributes to turn off */=20
+
+int field_opts(FIELD *field);             /* field to query */
+</PRE>By default, all options are on. Here are the available option =
+bits:=20
+<DL>
+  <DT>O_VISIBLE=20
+  <DD>Controls whether the field is visible on the screen. Can be used =
+during=20
+  form processing to hide or pop up fields depending on the value of =
+parent=20
+  fields.=20
+  <DT>O_ACTIVE=20
+  <DD>Controls whether the field is active during forms processing (i.e. =
+visited=20
+  by form navigation keys). Can be used to make labels or derived fields =
+with=20
+  buffer values alterable by the forms application, not the user.=20
+  <DT>O_PUBLIC=20
+  <DD>Controls whether data is displayed during field entry. If this =
+option is=20
+  turned off on a field, the library will accept and edit data in that =
+field,=20
+  but it will not be displayed and the visible field cursor will not =
+move. You=20
+  can turn off the O_PUBLIC bit to define password fields.=20
+  <DT>O_EDIT=20
+  <DD>Controls whether the field's data can be modified. When this =
+option is=20
+  off, all editing requests except <TT>REQ_PREV_CHOICE</TT> and=20
+  <TT>REQ_NEXT_CHOICE</TT>will fail. Such read-only fields may be useful =
+for=20
+  help messages.=20
+  <DT>O_WRAP=20
+  <DD>Controls word-wrapping in multi-line fields. Normally, when any =
+character=20
+  of a (blank-separated) word reaches the end of the current line, the =
+entire=20
+  word is wrapped to the next line (assuming there is one). When this =
+option is=20
+  off, the word will be split across the line break.=20
+  <DT>O_BLANK=20
+  <DD>Controls field blanking. When this option is on, entering a =
+character at=20
+  the first field position erases the entire field (except for the =
+just-entered=20
+  character).=20
+  <DT>O_AUTOSKIP=20
+  <DD>Controls automatic skip to next field when this one fills. =
+Normally, when=20
+  the forms user tries to type more data into a field than will fit, the =
+editing=20
+  location jumps to next field. When this option is off, the user's =
+cursor will=20
+  hang at the end of the field. This option is ignored in dynamic fields =
+that=20
+  have not reached their size limit.=20
+  <DT>O_NULLOK=20
+  <DD>Controls whether <A=20
+  =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fvalidation">valid=
+ation</A>=20
+  is applied to blank fields. Normally, it is not; the user can leave a =
+field=20
+  blank without invoking the usual validation check on exit. If this =
+option is=20
+  off on a field, exit from it will invoke a validation check.=20
+  <DT>O_PASSOK=20
+  <DD>Controls whether validation occurs on every exit, or only after =
+the field=20
+  is modified. Normally the latter is true. Setting O_PASSOK may be =
+useful if=20
+  your field's validation function may change during forms processing.=20
+  <DT>O_STATIC=20
+  <DD>Controls whether the field is fixed to its initial dimensions. If =
+you turn=20
+  this off, the field becomes <A=20
+  =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fdynamic">dynamic<=
+/A> and=20
+  will stretch to fit entered data. </DD></DL>A field's options cannot =
+be changed=20
+while the field is currently selected. However, options may be changed =
+on posted=20
+fields that are not current.=20
+<P>The option values are bit-masks and can be composed with logical-or =
+in the=20
+obvious way.=20
+<P>
+<H2><A name=3Dfstatus>Field Status</A></H2>Every field has a status =
+flag, which is=20
+set to FALSE when the field is created and TRUE when the value in field =
+buffer 0=20
+changes. This flag can be queried and set directly:=20
+<P><PRE>int set_field_status(FIELD *field,      /* field to alter */
+                   int status);         /* mode to set */
+
+int field_status(FIELD *field);         /* fetch mode of field */
+</PRE>Setting this flag under program control can be useful if you use =
+the same=20
+form repeatedly, looking for modified fields each time.=20
+<P>Calling <TT>field_status()</TT> on a field not currently selected for =
+input=20
+will return a correct value. Calling <TT>field_status()</TT> on a field =
+that is=20
+currently selected for input may not necessarily give a correct field =
+status=20
+value, because entered data isn't necessarily copied to buffer zero =
+before the=20
+exit validation check. To guarantee that the returned status value =
+reflects=20
+reality, call <TT>field_status()</TT> either (1) in the field's exit =
+validation=20
+check routine, (2) from the field's or form's initialization or =
+termination=20
+hooks, or (3) just after a <TT>REQ_VALIDATION</TT> request has been =
+processed by=20
+the forms driver.=20
+<P>
+<H2><A name=3Dfuser>Field User Pointer</A></H2>Each field structure =
+contains one=20
+character pointer slot that is not used by the forms library. It is =
+intended to=20
+be used by applications to store private per-field data. You can =
+manipulate it=20
+with: <PRE>int set_field_userptr(FIELD *field,       /* field to alter =
+*/
+                   char *userptr);        /* mode to set */
+
+char *field_userptr(FIELD *field);        /* fetch mode of field */
+</PRE>(Properly, this user pointer field ought to have <TT>(void *)</TT> =
+type.=20
+The <TT>(char *)</TT> type is retained for System V compatibility.)=20
+<P>It is valid to set the user pointer of the default field (with a=20
+<TT>set_field_userptr()</TT> call passed a NULL field pointer.) When a =
+new field=20
+is created, the default-field user pointer is copied to initialize the =
+new=20
+field's user pointer.=20
+<P>
+<H2><A name=3Dfdynamic>Variable-Sized Fields</A></H2>Normally, a field =
+is fixed at=20
+the size specified for it at creation time. If, however, you turn off =
+its=20
+O_STATIC bit, it becomes <DFN>dynamic</DFN> and will automatically =
+resize itself=20
+to accommodate data as it is entered. If the field has extra buffers =
+associated=20
+with it, they will grow right along with the main input buffer.=20
+<P>A one-line dynamic field will have a fixed height (1) but variable =
+width,=20
+scrolling horizontally to display data within the field area as =
+originally=20
+dimensioned and located. A multi-line dynamic field will have a fixed =
+width, but=20
+variable height (number of rows), scrolling vertically to display data =
+within=20
+the field area as originally dimensioned and located.=20
+<P>Normally, a dynamic field is allowed to grow without limit. But it is =
+
+possible to set an upper limit on the size of a dynamic field. You do it =
+with=20
+this function:=20
+<P><PRE>int set_max_field(FIELD *field,     /* field to alter (may not =
+be NULL) */
+                   int max_size);   /* upper limit on field size */=20
+</PRE>If the field is one-line, <TT>max_size</TT> is taken to be a =
+column size=20
+limit; if it is multi-line, it is taken to be a line size limit. To =
+disable any=20
+limit, use an argument of zero. The growth limit can be changed whether =
+or not=20
+the O_STATIC bit is on, but has no effect until it is.=20
+<P>The following properties of a field change when it becomes dynamic:=20
+<UL>
+  <LI>If there is no growth limit, there is no final position of the =
+field;=20
+  therefore <TT>O_AUTOSKIP</TT> and <TT>O_NL_OVERLOAD</TT> are ignored.=20
+  <LI>Field justification will be ignored (though whatever justification =
+is set=20
+  up will be retained internally and can be queried).=20
+  <LI>The <TT>dup_field()</TT> and <TT>link_field()</TT> calls copy=20
+  dynamic-buffer sizes. If the <TT>O_STATIC</TT> option is set on one of =
+a=20
+  collection of links, buffer resizing will occur only when the field is =
+edited=20
+  through that link.=20
+  <LI>The call <TT>field_info()</TT> will retrieve the original static =
+size of=20
+  the field; use <TT>dynamic_field_info()</TT> to get the actual dynamic =
+size.=20
+  </LI></UL>
+<H2><A name=3Dfvalidation>Field Validation</A></H2>By default, a field =
+will accept=20
+any data that will fit in its input buffer. However, it is possible to =
+attach a=20
+validation type to a field. If you do this, any attempt to leave the =
+field while=20
+it contains data that doesn't match the validation type will fail. Some=20
+validation types also have a character-validity check for each time a =
+character=20
+is entered in the field.=20
+<P>A field's validation check (if any) is not called when=20
+<TT>set_field_buffer()</TT> modifies the input buffer, nor when that =
+buffer is=20
+changed through a linked field.=20
+<P>The <TT>form</TT> library provides a rich set of pre-defined =
+validation=20
+types, and gives you the capability to define custom ones of your own. =
+You can=20
+examine and change field validation attributes with the following =
+functions:=20
+<P><PRE>int set_field_type(FIELD *field,          /* field to alter */
+                   FIELDTYPE *ftype,      /* type to associate */
+                   ...);                  /* additional arguments*/
+
+FIELDTYPE *field_type(FIELD *field);      /* field to query */
+</PRE>The validation type of a field is considered an attribute of the =
+field. As=20
+with other field attributes, Also, doing <TT>set_field_type()</TT> with =
+a=20
+<TT>NULL</TT> field default will change the system default for =
+validation of=20
+newly-created fields.=20
+<P>Here are the pre-defined validation types:=20
+<P>
+<H3><A name=3Dftype_alpha>TYPE_ALPHA</A></H3>This field type accepts =
+alphabetic=20
+data; no blanks, no digits, no special characters (this is checked at=20
+character-entry time). It is set up with:=20
+<P><PRE>int set_field_type(FIELD *field,          /* field to alter */
+                   TYPE_ALPHA,            /* type to associate */
+                   int width);            /* maximum width of field */
+</PRE>The <TT>width</TT> argument sets a minimum width of data. =
+Typically you'll=20
+want to set this to the field width; if it's greater than the field =
+width, the=20
+validation check will always fail. A minimum width of zero makes field=20
+completion optional.=20
+<P>
+<H3><A name=3Dftype_alnum>TYPE_ALNUM</A></H3>This field type accepts =
+alphabetic=20
+data and digits; no blanks, no special characters (this is checked at=20
+character-entry time). It is set up with:=20
+<P><PRE>int set_field_type(FIELD *field,          /* field to alter */
+                   TYPE_ALNUM,            /* type to associate */
+                   int width);            /* maximum width of field */
+</PRE>The <TT>width</TT> argument sets a minimum width of data. As with=20
+TYPE_ALPHA, typically you'll want to set this to the field width; if =
+it's=20
+greater than the field width, the validation check will always fail. A =
+minimum=20
+width of zero makes field completion optional.=20
+<P>
+<H3><A name=3Dftype_enum>TYPE_ENUM</A></H3>This type allows you to =
+restrict a=20
+field's values to be among a specified set of string values (for =
+example, the=20
+two-letter postal codes for U.S. states). It is set up with:=20
+<P><PRE>int set_field_type(FIELD *field,          /* field to alter */
+                   TYPE_ENUM,             /* type to associate */
+                   char **valuelist;      /* list of possible values */
+                   int checkcase;         /* case-sensitive? */
+                   int checkunique);      /* must specify uniquely? */
+</PRE>The <TT>valuelist</TT> parameter must point at a NULL-terminated =
+list of=20
+valid strings. The <TT>checkcase</TT> argument, if true, makes =
+comparison with=20
+the string case-sensitive.=20
+<P>When the user exits a TYPE_ENUM field, the validation procedure tries =
+to=20
+complete the data in the buffer to a valid entry. If a complete choice =
+string=20
+has been entered, it is of course valid. But it is also possible to =
+enter a=20
+prefix of a valid string and have it completed for you.=20
+<P>By default, if you enter such a prefix and it matches more than one =
+value in=20
+the string list, the prefix will be completed to the first matching =
+value. But=20
+the <TT>checkunique</TT> argument, if true, requires prefix matches to =
+be unique=20
+in order to be valid.=20
+<P>The <TT>REQ_NEXT_CHOICE</TT> and <TT>REQ_PREV_CHOICE</TT> input =
+requests can=20
+be particularly useful with these fields.=20
+<P>
+<H3><A name=3Dftype_integer>TYPE_INTEGER</A></H3>This field type accepts =
+an=20
+integer. It is set up as follows:=20
+<P><PRE>int set_field_type(FIELD *field,          /* field to alter */
+                   TYPE_INTEGER,          /* type to associate */
+                   int padding,           /* # places to zero-pad to */
+                   int vmin, int vmax);   /* valid range */
+</PRE>Valid characters consist of an optional leading minus and digits. =
+The=20
+range check is performed on exit. If the range maximum is less than or =
+equal to=20
+the minimum, the range is ignored.=20
+<P>If the value passes its range check, it is padded with as many =
+leading zero=20
+digits as necessary to meet the padding argument.=20
+<P>A <TT>TYPE_INTEGER</TT> value buffer can conveniently be interpreted =
+with the=20
+C library function <TT>atoi(3)</TT>.=20
+<H3><A name=3Dftype_numeric>TYPE_NUMERIC</A></H3>This field type accepts =
+a decimal=20
+number. It is set up as follows:=20
+<P><PRE>int set_field_type(FIELD *field,          /* field to alter */
+                   TYPE_NUMERIC,          /* type to associate */
+                   int padding,           /* # places of precision */
+                   int vmin, int vmax);   /* valid range */
+</PRE>Valid characters consist of an optional leading minus and digits. =
+possibly=20
+including a decimal point. The range check is performed on exit. If the =
+range=20
+maximum is less than or equal to the minimum, the range is ignored.=20
+<P>If the value passes its range check, it is padded with as many =
+trailing zero=20
+digits as necessary to meet the padding argument.=20
+<P>A <TT>TYPE_NUMERIC</TT> value buffer can conveniently be interpreted =
+with the=20
+C library function <TT>atof(3)</TT>.=20
+<H3><A name=3Dftype_regexp>TYPE_REGEXP</A></H3>This field type accepts =
+data=20
+matching a regular expression. It is set up as follows:=20
+<P><PRE>int set_field_type(FIELD *field,          /* field to alter */
+                   TYPE_REGEXP,           /* type to associate */
+                   char *regexp);         /* expression to match */
+</PRE>The syntax for regular expressions is that of <TT>regcomp(3)</TT>. =
+The=20
+check for regular-expression match is performed on exit.=20
+<H2><A name=3Dfbuffer>Direct Field Buffer Manipulation</A></H2>The most =
+central=20
+attribute of a field is its buffer contents. When a form has been =
+completed,=20
+your application usually needs to know the state of each field buffer. =
+You can=20
+find this out with:=20
+<P><PRE>char *field_buffer(FIELD *field,          /* field to query */
+                   int bufindex);         /* number of buffer to query =
+*/
+</PRE>Normally, the state of the zero-numbered buffer for each field is =
+set by=20
+the user's editing actions on that field. It's sometimes useful to be =
+able to=20
+set the value of the zero-numbered (or some other) buffer from your =
+application:=20
+<PRE>int set_field_buffer(FIELD *field,        /* field to alter */
+                   int bufindex,          /* number of buffer to alter =
+*/
+                   char *value);          /* string value to set */
+</PRE>If the field is not large enough and cannot be resized to a =
+sufficiently=20
+large size to contain the specified value, the value will be truncated =
+to fit.=20
+<P>Calling <TT>field_buffer()</TT> with a null field pointer will raise =
+an=20
+error. Calling <TT>field_buffer()</TT> on a field not currently selected =
+for=20
+input will return a correct value. Calling <TT>field_buffer()</TT> on a =
+field=20
+that is currently selected for input may not necessarily give a correct =
+field=20
+buffer value, because entered data isn't necessarily copied to buffer =
+zero=20
+before the exit validation check. To guarantee that the returned buffer =
+value=20
+reflects on-screen reality, call <TT>field_buffer()</TT> either (1) in =
+the=20
+field's exit validation check routine, (2) from the field's or form's=20
+initialization or termination hooks, or (3) just after a =
+<TT>REQ_VALIDATION</TT>=20
+request has been processed by the forms driver.=20
+<P>
+<H2><A name=3Dformattrs>Attributes of Forms</A></H2>As with field =
+attributes, form=20
+attributes inherit a default from a system default form structure. These =
+
+defaults can be queried or set by of these functions using a =
+form-pointer=20
+argument of <TT>NULL</TT>.=20
+<P>The most important attribute of a form is its field list. You can =
+query and=20
+change this list with:=20
+<P><PRE>int set_form_fields(FORM *form,           /* form to alter */
+                    FIELD **fields);      /* fields to connect */
+
+char *form_fields(FORM *form);            /* fetch fields of form */
+
+int field_count(FORM *form);              /* count connect fields */
+</PRE>The second argument of <TT>set_form_fields()</TT> may be a =
+NULL-terminated=20
+field pointer array like the one required by <TT>new_form()</TT>. In =
+that case,=20
+the old fields of the form are disconnected but not freed (and eligible =
+to be=20
+connected to other forms), then the new fields are connected.=20
+<P>It may also be null, in which case the old fields are disconnected =
+(and not=20
+freed) but no new ones are connected.=20
+<P>The <TT>field_count()</TT> function simply counts the number of =
+fields=20
+connected to a given from. It returns -1 if the form-pointer argument is =
+NULL.=20
+<P>
+<H2><A name=3Dfdisplay>Control of Form Display</A></H2>In the overview =
+section,=20
+you saw that to display a form you normally start by defining its size =
+(and=20
+fields), posting it, and refreshing the screen. There is an hidden step =
+before=20
+posting, which is the association of the form with a frame window =
+(actually, a=20
+pair of windows) within which it will be displayed. By default, the =
+forms=20
+library associates every form with the full-screen window =
+<TT>stdscr</TT>.=20
+<P>By making this step explicit, you can associate a form with a =
+declared frame=20
+window on your screen display. This can be useful if you want to adapt =
+the form=20
+display to different screen sizes, dynamically tile forms on the screen, =
+or use=20
+a form as part of an interface layout managed by <A=20
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#panels">panels</A>=
+.=20
+<P>The two windows associated with each form have the same functions as =
+their=20
+analogues in the <A=20
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#menu">menu =
+library</A>.=20
+Both these windows are painted when the form is posted and erased when =
+the form=20
+is unposted.=20
+<P>The outer or frame window is not otherwise touched by the form =
+routines. It=20
+exists so the programmer can associate a title, a border, or perhaps =
+help text=20
+with the form and have it properly refreshed or erased at post/unpost =
+time. The=20
+inner window or subwindow is where the current form page is actually =
+displayed.=20
+<P>In order to declare your own frame window for a form, you'll need to =
+know the=20
+size of the form's bounding rectangle. You can get this information =
+with:=20
+<P><PRE>int scale_form(FORM *form,                /* form to query */
+               int *rows,                 /* form rows */
+               int *cols);                /* form cols */
+</PRE>The form dimensions are passed back in the locations pointed to by =
+the=20
+arguments. Once you have this information, you can use it to declare of =
+windows,=20
+then use one of these functions: <PRE>int set_form_win(FORM *form,       =
+       /* form to alter */
+                 WINDOW *win);            /* frame window to connect */
+
+WINDOW *form_win(FORM *form);             /* fetch frame window of form =
+*/
+
+int set_form_sub(FORM *form,              /* form to alter */
+                 WINDOW *win);            /* form subwindow to connect =
+*/
+
+WINDOW *form_sub(FORM *form);             /* fetch form subwindow of =
+form */
+</PRE>Note that curses operations, including <TT>refresh()</TT>, on the =
+form,=20
+should be done on the frame window, not the form subwindow.=20
+<P>It is possible to check from your application whether all of a =
+scrollable=20
+field is actually displayed within the menu subwindow. Use these =
+functions:=20
+<P><PRE>int data_ahead(FORM *form);               /* form to be queried =
+*/=20
+
+int data_behind(FORM *form);              /* form to be queried */=20
+</PRE>The function <TT>data_ahead()</TT> returns TRUE if (a) the current =
+field=20
+is one-line and has undisplayed data off to the right, (b) the current =
+field is=20
+multi-line and there is data off-screen below it.=20
+<P>The function <TT>data_behind()</TT> returns TRUE if the first (upper =
+left=20
+hand) character position is off-screen (not being displayed).=20
+<P>Finally, there is a function to restore the form window's cursor to =
+the value=20
+expected by the forms driver:=20
+<P><PRE>int pos_form_cursor(FORM *)               /* form to be queried =
+*/
+</PRE>If your application changes the form window cursor, call this =
+function=20
+before handing control back to the forms driver in order to =
+re-synchronize it.=20
+<P>
+<H2><A name=3Dfdriver>Input Processing in the Forms Driver</A></H2>The =
+function=20
+<TT>form_driver()</TT> handles virtualized input requests for form =
+navigation,=20
+editing, and validation requests, just as <TT>menu_driver</TT> does for =
+menus=20
+(see the section on <A=20
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#minput">menu =
+input=20
+handling</A>).=20
+<P><PRE>int form_driver(FORM *form,               /* form to pass input =
+to */
+                int request);             /* form request code */
+</PRE>Your input virtualization function needs to take input and then =
+convert it=20
+to either an alphanumeric character (which is treated as data to be =
+entered in=20
+the currently-selected field), or a forms processing request.=20
+<P>The forms driver provides hooks (through input-validation and=20
+field-termination functions) with which your application code can check =
+that the=20
+input taken by the driver matched what was expected.=20
+<P>
+<H3><A name=3Dfpage>Page Navigation Requests</A></H3>These requests =
+cause=20
+page-level moves through the form, triggering display of a new form =
+screen.=20
+<P>
+<DL>
+  <DT><TT>REQ_NEXT_PAGE</TT>=20
+  <DD>Move to the next form page.=20
+  <DT><TT>REQ_PREV_PAGE</TT>=20
+  <DD>Move to the previous form page.=20
+  <DT><TT>REQ_FIRST_PAGE</TT>=20
+  <DD>Move to the first form page.=20
+  <DT><TT>REQ_LAST_PAGE</TT>=20
+  <DD>Move to the last form page. </DD></DL>These requests treat the =
+list as=20
+cyclic; that is, <TT>REQ_NEXT_PAGE</TT> from the last page goes to the =
+first,=20
+and <TT>REQ_PREV_PAGE</TT> from the first page goes to the last.=20
+<P>
+<H3><A name=3D#ffield>Inter-Field Navigation Requests</A></H3>These =
+requests=20
+handle navigation between fields on the same page.=20
+<P>
+<DL>
+  <DT><TT>REQ_NEXT_FIELD</TT>=20
+  <DD>Move to next field.=20
+  <DT><TT>REQ_PREV_FIELD</TT>=20
+  <DD>Move to previous field.=20
+  <DT><TT>REQ_FIRST_FIELD</TT>=20
+  <DD>Move to the first field.=20
+  <DT><TT>REQ_LAST_FIELD</TT>=20
+  <DD>Move to the last field.=20
+  <P></P>
+  <DT><TT>REQ_SNEXT_FIELD</TT>=20
+  <DD>Move to sorted next field.=20
+  <DT><TT>REQ_SPREV_FIELD</TT>=20
+  <DD>Move to sorted previous field.=20
+  <DT><TT>REQ_SFIRST_FIELD</TT>=20
+  <DD>Move to the sorted first field.=20
+  <DT><TT>REQ_SLAST_FIELD</TT>=20
+  <DD>Move to the sorted last field.=20
+  <P></P>
+  <DT><TT>REQ_LEFT_FIELD</TT>=20
+  <DD>Move left to field.=20
+  <DT><TT>REQ_RIGHT_FIELD</TT>=20
+  <DD>Move right to field.=20
+  <DT><TT>REQ_UP_FIELD</TT>=20
+  <DD>Move up to field.=20
+  <DT><TT>REQ_DOWN_FIELD</TT>=20
+  <DD>Move down to field. </DD></DL>These requests treat the list of =
+fields on a=20
+page as cyclic; that is, <TT>REQ_NEXT_FIELD</TT> from the last field =
+goes to the=20
+first, and <TT>REQ_PREV_FIELD</TT> from the first field goes to the =
+last. The=20
+order of the fields for these (and the <TT>REQ_FIRST_FIELD</TT> and=20
+<TT>REQ_LAST_FIELD</TT> requests) is simply the order of the field =
+pointers in=20
+the form array (as set up by <TT>new_form()</TT> or =
+<TT>set_form_fields()</TT>=20
+<P>It is also possible to traverse the fields as if they had been sorted =
+in=20
+screen-position order, so the sequence goes left-to-right and =
+top-to-bottom. To=20
+do this, use the second group of four sorted-movement requests.=20
+<P>Finally, it is possible to move between fields using visual =
+directions up,=20
+down, right, and left. To accomplish this, use the third group of four =
+requests.=20
+Note, however, that the position of a form for purposes of these =
+requests is its=20
+upper-left corner.=20
+<P>For example, suppose you have a multi-line field B, and two =
+single-line=20
+fields A and C on the same line with B, with A to the left of B and C to =
+the=20
+right of B. A <TT>REQ_MOVE_RIGHT</TT> from A will go to B only if A, B, =
+and C=20
+<EM>all</EM> share the same first line; otherwise it will skip over B to =
+C.=20
+<P>
+<H3><A name=3D#fifield>Intra-Field Navigation Requests</A></H3>These =
+requests=20
+drive movement of the edit cursor within the currently selected field.=20
+<P>
+<DL>
+  <DT><TT>REQ_NEXT_CHAR</TT>=20
+  <DD>Move to next character.=20
+  <DT><TT>REQ_PREV_CHAR</TT>=20
+  <DD>Move to previous character.=20
+  <DT><TT>REQ_NEXT_LINE</TT>=20
+  <DD>Move to next line.=20
+  <DT><TT>REQ_PREV_LINE</TT>=20
+  <DD>Move to previous line.=20
+  <DT><TT>REQ_NEXT_WORD</TT>=20
+  <DD>Move to next word.=20
+  <DT><TT>REQ_PREV_WORD</TT>=20
+  <DD>Move to previous word.=20
+  <DT><TT>REQ_BEG_FIELD</TT>=20
+  <DD>Move to beginning of field.=20
+  <DT><TT>REQ_END_FIELD</TT>=20
+  <DD>Move to end of field.=20
+  <DT><TT>REQ_BEG_LINE</TT>=20
+  <DD>Move to beginning of line.=20
+  <DT><TT>REQ_END_LINE</TT>=20
+  <DD>Move to end of line.=20
+  <DT><TT>REQ_LEFT_CHAR</TT>=20
+  <DD>Move left in field.=20
+  <DT><TT>REQ_RIGHT_CHAR</TT>=20
+  <DD>Move right in field.=20
+  <DT><TT>REQ_UP_CHAR</TT>=20
+  <DD>Move up in field.=20
+  <DT><TT>REQ_DOWN_CHAR</TT>=20
+  <DD>Move down in field. </DD></DL>Each <EM>word</EM> is separated from =
+the=20
+previous and next characters by whitespace. The commands to move to =
+beginning=20
+and end of line or field look for the first or last non-pad character in =
+their=20
+ranges.=20
+<P>
+<H3><A name=3Dfscroll>Scrolling Requests</A></H3>Fields that are dynamic =
+and have=20
+grown and fields explicitly created with offscreen rows are scrollable. =
+One-line=20
+fields scroll horizontally; multi-line fields scroll vertically. Most =
+scrolling=20
+is triggered by editing and intra-field movement (the library scrolls =
+the field=20
+to keep the cursor visible). It is possible to explicitly request =
+scrolling with=20
+the following requests:=20
+<P>
+<P>
+<DL>
+  <DT><TT>REQ_SCR_FLINE</TT>=20
+  <DD>Scroll vertically forward a line.=20
+  <DT><TT>REQ_SCR_BLINE</TT>=20
+  <DD>Scroll vertically backward a line.=20
+  <DT><TT>REQ_SCR_FPAGE</TT>=20
+  <DD>Scroll vertically forward a page.=20
+  <DT><TT>REQ_SCR_BPAGE</TT>=20
+  <DD>Scroll vertically backward a page.=20
+  <DT><TT>REQ_SCR_FHPAGE</TT>=20
+  <DD>Scroll vertically forward half a page.=20
+  <DT><TT>REQ_SCR_BHPAGE</TT>=20
+  <DD>Scroll vertically backward half a page.=20
+  <DT><TT>REQ_SCR_FCHAR</TT>=20
+  <DD>Scroll horizontally forward a character.=20
+  <DT><TT>REQ_SCR_BCHAR</TT>=20
+  <DD>Scroll horizontally backward a character.=20
+  <DT><TT>REQ_SCR_HFLINE</TT>=20
+  <DD>Scroll horizontally one field width forward.=20
+  <DT><TT>REQ_SCR_HBLINE</TT>=20
+  <DD>Scroll horizontally one field width backward.=20
+  <DT><TT>REQ_SCR_HFHALF</TT>=20
+  <DD>Scroll horizontally one half field width forward.=20
+  <DT><TT>REQ_SCR_HBHALF</TT>=20
+  <DD>Scroll horizontally one half field width backward. </DD></DL>For =
+scrolling=20
+purposes, a <EM>page</EM> of a field is the height of its visible part.=20
+<P>
+<H3><A name=3Dfedit>Editing Requests</A></H3>When you pass the forms =
+driver an=20
+ASCII character, it is treated as a request to add the character to the =
+field's=20
+data buffer. Whether this is an insertion or a replacement depends on =
+the=20
+field's edit mode (insertion is the default.=20
+<P>The following requests support editing the field and changing the =
+edit mode:=20
+<P>
+<DL>
+  <DT><TT>REQ_INS_MODE</TT>=20
+  <DD>Set insertion mode.=20
+  <DT><TT>REQ_OVL_MODE</TT>=20
+  <DD>Set overlay mode.=20
+  <DT><TT>REQ_NEW_LINE</TT>=20
+  <DD>New line request (see below for explanation).=20
+  <DT><TT>REQ_INS_CHAR</TT>=20
+  <DD>Insert space at character location.=20
+  <DT><TT>REQ_INS_LINE</TT>=20
+  <DD>Insert blank line at character location.=20
+  <DT><TT>REQ_DEL_CHAR</TT>=20
+  <DD>Delete character at cursor.=20
+  <DT><TT>REQ_DEL_PREV</TT>=20
+  <DD>Delete previous word at cursor.=20
+  <DT><TT>REQ_DEL_LINE</TT>=20
+  <DD>Delete line at cursor.=20
+  <DT><TT>REQ_DEL_WORD</TT>=20
+  <DD>Delete word at cursor.=20
+  <DT><TT>REQ_CLR_EOL</TT>=20
+  <DD>Clear to end of line.=20
+  <DT><TT>REQ_CLR_EOF</TT>=20
+  <DD>Clear to end of field.=20
+  <DT><TT>REQ_CLEAR_FIELD</TT>=20
+  <DD>Clear entire field. </DD></DL>The behavior of the =
+<TT>REQ_NEW_LINE</TT> and=20
+<TT>REQ_DEL_PREV</TT> requests is complicated and partly controlled by a =
+pair of=20
+forms options. The special cases are triggered when the cursor is at the =
+
+beginning of a field, or on the last line of the field.=20
+<P>First, we consider <TT>REQ_NEW_LINE</TT>:=20
+<P>The normal behavior of <TT>REQ_NEW_LINE</TT> in insert mode is to =
+break the=20
+current line at the position of the edit cursor, inserting the portion =
+of the=20
+current line after the cursor as a new line following the current and =
+moving the=20
+cursor to the beginning of that new line (you may think of this as =
+inserting a=20
+newline in the field buffer).=20
+<P>The normal behavior of <TT>REQ_NEW_LINE</TT> in overlay mode is to =
+clear the=20
+current line from the position of the edit cursor to end of line. The =
+cursor is=20
+then moved to the beginning of the next line.=20
+<P>However, <TT>REQ_NEW_LINE</TT> at the beginning of a field, or on the =
+last=20
+line of a field, instead does a <TT>REQ_NEXT_FIELD</TT>. =
+<TT>O_NL_OVERLOAD</TT>=20
+option is off, this special action is disabled.=20
+<P>Now, let us consider <TT>REQ_DEL_PREV</TT>:=20
+<P>The normal behavior of <TT>REQ_DEL_PREV</TT> is to delete the =
+previous=20
+character. If insert mode is on, and the cursor is at the start of a =
+line, and=20
+the text on that line will fit on the previous one, it instead appends =
+the=20
+contents of the current line to the previous one and deletes the current =
+line=20
+(you may think of this as deleting a newline from the field buffer).=20
+<P>However, <TT>REQ_DEL_PREV</TT> at the beginning of a field is instead =
+treated=20
+as a <TT>REQ_PREV_FIELD</TT>.=20
+<P>If the <TT>O_BS_OVERLOAD</TT> option is off, this special action is =
+disabled=20
+and the forms driver just returns <TT>E_REQUEST_DENIED</TT>.=20
+<P>See <A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#frmoptions">Form=20
+Options</A> for discussion of how to set and clear the overload options. =
+
+<P>
+<H3><A name=3Dforder>Order Requests</A></H3>If the type of your field is =
+ordered,=20
+and has associated functions for getting the next and previous values of =
+the=20
+type from a given value, there are requests that can fetch that value =
+into the=20
+field buffer:=20
+<P>
+<DL>
+  <DT><TT>REQ_NEXT_CHOICE</TT>=20
+  <DD>Place the successor value of the current value in the buffer.=20
+  <DT><TT>REQ_PREV_CHOICE</TT>=20
+  <DD>Place the predecessor value of the current value in the buffer. =
+</DD></DL>Of=20
+the built-in field types, only <TT>TYPE_ENUM</TT> has built-in successor =
+and=20
+predecessor functions. When you define a field type of your own (see <A=20
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#fcustom">Custom =
+Validation=20
+Types</A>), you can associate our own ordering functions.=20
+<P>
+<H3><A name=3Dfappcmds>Application Commands</A></H3>Form requests are =
+represented=20
+as integers above the <TT>curses</TT> value greater than =
+<TT>KEY_MAX</TT> and=20
+less than or equal to the constant <TT>MAX_COMMAND</TT>. If your=20
+input-virtualization routine returns a value above <TT>MAX_COMMAND</TT>, =
+the=20
+forms driver will ignore it.=20
+<P>
+<H2><A name=3Dfhooks>Field Change Hooks</A></H2>It is possible to set =
+function=20
+hooks to be executed whenever the current field or form changes. Here =
+are the=20
+functions that support this:=20
+<P><PRE>typedef void	(*HOOK)();       /* pointer to function returning =
+void */
+
+int set_form_init(FORM *form,    /* form to alter */
+                  HOOK hook);    /* initialization hook */
+
+HOOK form_init(FORM *form);      /* form to query */
+
+int set_form_term(FORM *form,    /* form to alter */
+                  HOOK hook);    /* termination hook */
+
+HOOK form_term(FORM *form);      /* form to query */
+
+int set_field_init(FORM *form,   /* form to alter */
+                  HOOK hook);    /* initialization hook */
+
+HOOK field_init(FORM *form);     /* form to query */
+
+int set_field_term(FORM *form,   /* form to alter */
+                  HOOK hook);    /* termination hook */
+
+HOOK field_term(FORM *form);     /* form to query */
+</PRE>These functions allow you to either set or query four different =
+hooks. In=20
+each of the set functions, the second argument should be the address of =
+a hook=20
+function. These functions differ only in the timing of the hook call.=20
+<P>
+<DL>
+  <DT>form_init=20
+  <DD>This hook is called when the form is posted; also, just after each =
+page=20
+  change operation.=20
+  <DT>field_init=20
+  <DD>This hook is called when the form is posted; also, just after each =
+field=20
+  change=20
+  <DT>field_term=20
+  <DD>This hook is called just after field validation; that is, just =
+before the=20
+  field is altered. It is also called when the form is unposted.=20
+  <P></P>
+  <DT>form_term=20
+  <DD>This hook is called when the form is unposted; also, just before =
+each page=20
+  change operation. </DD></DL>Calls to these hooks may be triggered=20
+<OL>
+  <LI>When user editing requests are processed by the forms driver=20
+  <LI>When the current page is changed by <TT>set_current_field()</TT> =
+call=20
+  <LI>When the current field is changed by a <TT>set_form_page()</TT> =
+call=20
+</LI></OL>See <A name=3Dffocus>Field Change Commands</A> for discussion =
+of the=20
+latter two cases.=20
+<P>You can set a default hook for all fields by passing one of the set =
+functions=20
+a NULL first argument.=20
+<P>You can disable any of these hooks by (re)setting them to NULL, the =
+default=20
+value.=20
+<P>
+<H2><A =
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#ffocus">Field =
+Change=20
+Commands</A></H2>Normally, navigation through the form will be driven by =
+the=20
+user's input requests. But sometimes it is useful to be able to move the =
+focus=20
+for editing and viewing under control of your application, or ask which =
+field it=20
+currently is in. The following functions help you accomplish this:=20
+<P><PRE>int set_current_field(FORM *form,         /* form to alter */
+                      FIELD *field);      /* field to shift to */
+
+FIELD *current_field(FORM *form);         /* form to query */
+
+int field_index(FORM *form,               /* form to query */
+                FIELD *field);            /* field to get index of */
+</PRE>The function <TT>field_index()</TT> returns the index of the given =
+field=20
+in the given form's field array (the array passed to <TT>new_form()</TT> =
+or=20
+<TT>set_form_fields()</TT>).=20
+<P>The initial current field of a form is the first active field on the =
+first=20
+page. The function <TT>set_form_fields()</TT> resets this.
+<P>It is also possible to move around by pages.=20
+<P><PRE>int set_form_page(FORM *form,             /* form to alter */
+                  int page);              /* page to go to (0-origin) */
+
+int form_page(FORM *form);                /* return form's current page =
+*/
+</PRE>The initial page of a newly-created form is 0. The function=20
+<TT>set_form_fields()</TT> resets this.=20
+<P>
+<H2><A name=3Dfrmoptions>Form Options</A></H2>Like fields, forms may =
+have control=20
+option bits. They can be changed or queried with these functions:=20
+<P><PRE><PRE>int set_form_opts(FORM *form,             /* form to alter =
+*/
+                  int attr);              /* attribute to set */=20
+
+int form_opts_on(FORM *form,              /* form to alter */
+                 int attr);               /* attributes to turn on */=20
+
+int form_opts_off(FORM *form,             /* form to alter */
+                  int attr);              /* attributes to turn off */=20
+
+int form_opts(FORM *form);                /* form to query */
+</PRE>
+
+By default, all options are on.  Here are the available option bits:
+</PRE>
+<DL>
+  <DT>O_NL_OVERLOAD=20
+  <DD>Enable overloading of <TT>REQ_NEW_LINE</TT> as described in <A=20
+  name=3Dfedit>Editing Requests</A>. The value of this option is ignored =
+on=20
+  dynamic fields that have not reached their size limit; these have no =
+last=20
+  line, so the circumstances for triggering a <TT>REQ_NEXT_FIELD</TT> =
+never=20
+  arise.=20
+  <DT>O_BS_OVERLOAD=20
+  <DD>Enable overloading of <TT>REQ_DEL_PREV</TT> as described in <A=20
+  name=3Dfedit>Editing Requests</A>. </DD></DL>The option values are =
+bit-masks and=20
+can be composed with logical-or in the obvious way.=20
+<P>
+<H2><A name=3Dfcustom>Custom Validation Types</A></H2>The <TT>form</TT> =
+library=20
+gives you the capability to define custom validation types of your own. =
+Further,=20
+the optional additional arguments of <TT>set_field_type</TT> effectively =
+allow=20
+you to parameterize validation types. Most of the complications in the=20
+validation-type interface have to do with the handling of the additional =
+
+arguments within custom validation functions.=20
+<P>
+<H3><A name=3Dflinktypes>Union Types</A></H3>The simplest way to create =
+a custom=20
+data type is to compose it from two preexisting ones:=20
+<P><PRE>FIELD *link_fieldtype(FIELDTYPE *type1,=20
+                      FIELDTYPE *type2);
+</PRE>This function creates a field type that will accept any of the =
+values=20
+legal for either of its argument field types (which may be either =
+predefined or=20
+programmer-defined). If a <TT>set_field_type()</TT> call later requires=20
+arguments, the new composite type expects all arguments for the first =
+type, than=20
+all arguments for the second. Order functions (see <A=20
+href=3D"http://web.cs.mun.ca/~rod/ncurses/ncurses.html#forder">Order =
+Requests</A>)=20
+associated with the component types will work on the composite; what it =
+does is=20
+check the validation function for the first type, then for the second, =
+to figure=20
+what type the buffer contents should be treated as.=20
+<P>
+<H3><A name=3Dfnewtypes>New Field Types</A></H3>To create a field type =
+from=20
+scratch, you need to specify one or both of the following things:=20
+<P>
+<UL>
+  <LI>A character-validation function, to check each character as it is =
+entered.=20
+
+  <LI>A field-validation function to be applied on exit from the field.=20
+</LI></UL>Here's how you do that:=20
+<P>typedef int (*HOOK)(); /* pointer to function returning int */ =
+<PRE>FIELDTYPE *new_fieldtype(HOOK f_validate, /* field validator */
+                         HOOK c_validate) /* character validator */
+
+
+int free_fieldtype(FIELDTYPE *ftype);     /* type to free */
+</PRE>At least one of the arguments of <TT>new_fieldtype()</TT>must be =
+non-NULL.=20
+The forms driver will automatically call the new type's validation =
+functions at=20
+appropriate points in processing a field of the new type.=20
+<P>The function <TT>free_fieldtype()</TT> deallocates the argument =
+fieldtype,=20
+freeing all storage associated with it.=20
+<P>Normally, a field validator is called when the user attempts to leave =
+the=20
+field. Its first argument is a field fointer, from which it can get to =
+field=20
+buffer 0 and test it. If the function returns TRUE, the operation =
+succeeds; if=20
+it returns FALSE, the edit cursor stays in the field.=20
+<P>A character validator gets the character passed in as a first =
+argument. It=20
+too should return TRUE if the character is valid, FALSE otherwise.=20
+<P>
+<H3><A name=3Dfcheckargs>Validation Function Arguments</A></H3>Your =
+field- and=20
+character- validation functions will be passed a second argument as =
+well. This=20
+second argument is the address of a structure (which we'll call a =
+<EM>pile</EM>)=20
+built from any of the field-type-specific arguments passed to=20
+<TT>set_field_type()</TT>. If no such arguments are defined for the =
+field type,=20
+this pile pointer argument will be NULL.=20
+<P>In order to arrange for such arguments to be passed to your =
+validation=20
+functions, you must associate a small set of storage-management =
+functions with=20
+the type. The forms driver will use these to synthesize a pile from the =
+trailing=20
+arguments of each <TT>set_field_type()</TT> argument, and a pointer to =
+the pile=20
+will be passed to the validation functions.=20
+<P>Here is how you make the association:=20
+<P><PRE>typedef char	*(*PTRHOOK)();    /* pointer to function returning =
+(char *) */
+typedef void	(*VOIDHOOK)();    /* pointer to function returning void */
+
+int set_fieldtype_arg(FIELDTYPE *type,    /* type to alter */
+                      PTRHOOK make_str,   /* make structure from args */
+                      PTRHOOK copy_str,   /* make copy of structure */
+                      VOIDHOOK free_str); /* free structure storage */
+</PRE>Here is how the storage-management hooks are used:=20
+<P>
+<DL>
+  <DT><TT>make_str</TT>=20
+  <DD>This function is called by <TT>set_field_type()</TT>. It gets one=20
+  argument, a <TT>va_list</TT> of the type-specific arguments passed to=20
+  <TT>set_field_type()</TT>. It is expected to return a pile pointer to =
+a data=20
+  structure that encapsulates those arguments.=20
+  <DT><TT>copy_str</TT>=20
+  <DD>This function is called by form library functions that allocate =
+new field=20
+  instances. It is expected to take a pile pointer, copy the pile to =
+allocated=20
+  storage, and return the address of the pile copy.=20
+  <DT><TT>free_str</TT>=20
+  <DD>This function is called by field- and type-deallocation routines =
+in the=20
+  library. It takes a pile pointer argument, and is expected to free the =
+storage=20
+  of that pile. </DD></DL>The <TT>make_str</TT> and <TT>copy_str</TT> =
+functions=20
+may return NULL to signal allocation failure. The library routines will =
+that=20
+call them will return error indication when this happens. Thus, your =
+validation=20
+functions should never see a NULL file pointer and need not check =
+specially for=20
+it.=20
+<P>
+<H3><A name=3Dfcustorder>Order Functions For Custom Types</A></H3>Some =
+custom=20
+field types are simply ordered in the same well-defined way that=20
+<TT>TYPE_ENUM</TT> is. For such types, it is possible to define =
+successor and=20
+predecessor functions to support the <TT>REQ_NEXT_CHOICE</TT> and=20
+<TT>REQ_PREV_CHOICE</TT> requests. Here's how:=20
+<P><PRE>typedef int	(*INTHOOK)();     /* pointer to function returning =
+int */
+
+int set_fieldtype_arg(FIELDTYPE *type,    /* type to alter */
+                      INTHOOK succ,       /* get successor value */
+                      INTHOOK pred);      /* get predecessor value */
+</PRE>The successor and predecessor arguments will each be passed two =
+arguments;=20
+a field pointer, and a pile pointer (as for the validation functions). =
+They are=20
+expected to use the function <TT>field_buffer()</TT> to read the current =
+value,=20
+and <TT>set_field_buffer()</TT> on buffer 0 to set the next or previous =
+value.=20
+Either hook may return TRUE to indicate success (a legal next or =
+previous value=20
+was set) or FALSE to indicate failure.=20
+<P>
+<H3><A name=3Dfcustprobs>Avoiding Problems</A></H3>The interface for =
+defining=20
+custom types is complicated and tricky. Rather than attempting to create =
+a=20
+custom type entirely from scratch, you should start by studying the =
+library=20
+source code for whichever of the pre-defined types seems to be closest =
+to what=20
+you want.=20
+<P>Use that code as a model, and evolve it towards what you really want. =
+You=20
+will avoid many problems and annoyances that way. The code in the=20
+<TT>ncurses</TT> library has been specifically un-copyrighted to support =
+this.=20
+<P>If your custom type defines order functions, have do something =
+intuitive with=20
+a blank field. A useful convention is to make the successor of a blank =
+field the=20
+types minimum value, and its predecessor the maximum.=20
+<P>
+<HR>
+
+<P>THIS DOCUMENT IS STILL UNDER CONSTRUCTION. Full descriptions of the =
+form=20
+library entry points are available in the form_*.3x manual pages =
+included with=20
+the <TT>ncurses</TT> distributions.=20
+<P>
+<HR>
+
+<ADDRESS>Eric S. Raymond =
+&lt;esr@snark.thyrsus.com&gt;</ADDRESS></BODY></HTML>

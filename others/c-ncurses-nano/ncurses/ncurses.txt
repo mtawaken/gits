@@ -1,0 +1,12 @@
+ncurses src:
+	[1] ncurses-5.7.tar.gz (http://invisible-island.net/ncurses/)
+	[2] cdk.tar.gz (http://invisible-island.net/cdk/)
+	[3] cdk_vexus.tar.gz (http://www.vexus.ca/CDK.html)
+
+ncurses howto & Ref:
+	[1] ncurses-cn-2nd.pdf  (srccode: ncurses_programs.tar.gz)
+        [2] Writing Programs with NCURSES.mht
+
+CDK(Curses Develpment Kit):
+	[1] http://invisible-island.net/cdk/
+        [2] http://www.vexus.ca/CDK.html

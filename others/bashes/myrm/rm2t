@@ -1,0 +1,4 @@
+#!/bin/sh
+#written by mtawaken
+mkdir ~/.trash 2>/dev/null
+mv $* ~/.trash
