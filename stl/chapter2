@@ -1,0 +1,20 @@
+c++的新特性介绍。
+1. namespace 
+为了防止类和变量冲突而产生。STL的全部声明在std的namespace 里。
+2. template
+template<class T>用在使用模板的类或方法前。使用T作为参数是准标准。
+需要注意的是，可以在使用模板的类里再对方法使用另一模板。应用实例是构造参数的类型转换功能等等。
+
+这里class也可以被typename代替，事实上typename更加通用。
+typename Class::type* x; 使得Class::type被解释成Class中的某一类型而不是Class的静态变量。
+3.dynamic_cast
+比起强制类型转换，它只允许基类到派生类的转换，并进行检查，如果原指针所指的并不是一个派生对象，那转换回抛出异常bad_cast。
+这对于面向对象非常实用。
+4.可移植的main函数写法只有两种
+int main(){
+return 0;
+}
+int main(int args,char*argv){
+return 0;
+}
+return不写的话默认返回0.任何非0返回值都被系统认为是非正常结束。
