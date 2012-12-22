@@ -8,7 +8,7 @@ template<class T>用在使用模板的类或方法前。使用T作为参数是�
 这里class也可以被typename代替，事实上typename更加通用。
 typename Class::type* x; 使得Class::type被解释成Class中的某一类型而不是Class的静态变量。
 3.dynamic_cast
-比起强制类型转换，它只允许基类到派生类的转换，并进行检查，如果原指针所指的并不是一个派生对象，那转换回抛出异常bad_cast。
+比起强制类型转换，它只允许基类到派生类的转换(必须是有多态的)，并进行检查，如果原指针所指的并不是一个派生对象，那转换回抛出异常bad_cast。
 这对于面向对象非常实用。
 4.可移植的main函数写法只有两种
 int main(){
