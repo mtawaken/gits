@@ -1,0 +1,15 @@
+1. Floyd算法
+适用于对有向图的邻接矩阵求每两点之间的最短距离
+for(int k=1;k<=n;k++)//对中间节点
+for(int i=1;i<=n;i++)
+for(int j=1;j<=n;j++)//对每个对
+d[i][j]=min(d[i][j],d[i][k]+d[k][j])
+
+注意三层循环顺序不要错。
+可以再设path[i][j]=j之前最后一个节点。则初始化path[i][j]=i。当找到中间节点k时，更新path[i][j]=path[k][j]
+
+
+2. memset(char*p,char ch,int count)
+用于对字符串初始化。要注意两点：1. 以ascII码赋值 2.每次对一个byte赋值。
+所以对于int数组，可以用于 初始化为0，若memset(d,1,sizeof(d))。对于每个数组元素，值实际上是(1<<24)+(1<<16)+(1<<8)+1。若不是1，则还需考虑Little-endian的问题。
+总结：memset是cstring里的，明显是用于字符串操作。int数组可以借用来初始化为0。仅此。
