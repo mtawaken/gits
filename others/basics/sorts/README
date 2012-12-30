@@ -1,0 +1,6 @@
+genran min max count:generate integers
+issorted numbers:test if number array is sorted from low to high
+main.cpp:combine with a *sort.h to generate sort program
+
+how to use:
+genran -50 100 20 | xargs mergesort | xargs issorted
