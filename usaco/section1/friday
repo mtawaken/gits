@@ -2,12 +2,12 @@ import java.io.*;
 import java.util.*;
 
 public class friday {
-  public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException {
 		Scanner scanner = new Scanner(new FileReader("friday.in"));
 		PrintWriter pw = new PrintWriter(new FileWriter("friday.out"));
 		int N = scanner.nextInt();
-		int firstDayWeekdayIndex = 1;
-		int[] weekDayCounts = new int[8];
+		int firstDayWeekdayIndex = 0;
+		int[] weekDayCounts = new int[7];
 		int year = 1900;
 		int month = 1;
 		while (N-- > 0) {
@@ -22,7 +22,7 @@ public class friday {
 			}
 		}
 		for(int i=0;i<7;i++){
-			pw.println(weekDayCounts[(i+6)%8]);
+			pw.println(weekDayCounts[i]);
 		}
 		scanner.close();
 		pw.close();
