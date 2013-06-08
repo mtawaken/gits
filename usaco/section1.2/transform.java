@@ -80,6 +80,9 @@ public class transform {
 		}
 	}
 
+/*
+* TODO: new rotate method:row -> col
+*/
 	public static void rotate90(char[][] orig, char[][] tmp, int N) {
 		copy(orig, tmp, N);
 		for (int i = 0; i < N / 2; i++) {
