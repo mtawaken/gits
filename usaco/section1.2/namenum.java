@@ -5,7 +5,10 @@ TASK: namenum
  */
 import java.util.*;
 import java.io.*;
-
+/*
+* 正向哈希:耗费空间,O(3^字符串长度)
+* 还可以反向: O(字典长度)
+*/
 public class namenum {
   static boolean has = false;
 	public static void main(String args[]) throws IOException {
